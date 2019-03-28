@@ -1,0 +1,278 @@
+---
+layout: post
+title: Exercise 6 (part 2) – When is a class not a class?
+date: '2010-09-15T22:09:00.001+10:00'
+tags: 
+modified_time: '2010-09-15T22:09:43.487+10:00'
+---
+
+<p>It’s been a while, but I’ve finally found some time to post again.&#160; In my <a href="http://learningcsharpnet.blogspot.com/2010/08/exercise-6-part-1-multi-file-dll.html" target="_blank">last post</a> I showed the basic structure of a DLL for the engine of an RPN Calculator in response to <a href="http://www.jobsnake.com/seek/articles/index.cgi?openarticle&amp;8533" target="_blank">Prashant’s 6th exercise</a>.&#160; In this post I’ll start to look at the details.</p> <a name='more'></a>  <p>The first class I’ll look at is not actually a class – it’s a struct.&#160; In C# <strong>structs</strong> are simliar to <strong>classes</strong>, but there are some very important differences.&#160; I’ll look at te differences in more detail at the end of the post, but for now lets look at the InputLine struct.&#160; This <strong>struct</strong> models the line on the calculator display that accepts entry of numbers from the calculator keyboard.&#160; Here’s the code, with some comments.</p>  <div class="csharpcode">   <pre><span class="lnum">   1:  </span><span class="kwrd">namespace</span> LearningCSharp</pre>
+
+  <pre><span class="lnum">   2:  </span>{</pre>
+
+  <pre><span class="lnum">   3:  </span>    <span class="kwrd">public</span> <span class="kwrd">partial</span> <span class="kwrd">class</span> RPNCalculatorEngine</pre>
+
+  <pre><span class="lnum">   4:  </span>    {</pre>
+
+  <pre><span class="lnum">   5:  </span>        <span class="kwrd">protected</span> <span class="kwrd">struct</span> InputLine</pre>
+
+  <pre><span class="lnum">   6:  </span>        {</pre>
+</div>
+
+<p>The declaration of a <strong>struct</strong> is similar to that of a <strong>class</strong>.&#160; The <code>protected</code> keyword limits access to this <strong>struct</strong> to the code of the containing class, and any classes derived from it.</p>
+
+<div class="csharpcode">
+  <pre><span class="lnum">   7:  </span>            <span class="kwrd">private</span> <span class="kwrd">string</span> _mantissa;</pre>
+
+  <pre><span class="lnum">   8:  </span>            <span class="kwrd">private</span> <span class="kwrd">bool</span> _isNegative;</pre>
+
+  <pre><span class="lnum">   9:  </span>            <span class="kwrd">private</span> <span class="kwrd">string</span> _exponent;</pre>
+
+  <pre><span class="lnum">  10:  </span>            <span class="kwrd">private</span> <span class="kwrd">bool</span> _expIsNegative;</pre>
+
+  <pre><span class="lnum">  11:  </span>            <span class="kwrd">private</span> <span class="kwrd">bool</span> _inExponent;</pre>
+
+  <pre><span class="lnum">  12:  </span>            <span class="kwrd">private</span> <span class="kwrd">bool</span> _isActive;</pre>
+</div>
+
+<p>The content, and state of the input line are modelled by these fields. Because the fields are declared private, they are only accessible within the <code>InputLine</code> struct.</p>
+
+<div class="csharpcode">
+  <pre><span class="lnum">  13:  </span>&#160;</pre>
+
+  <pre><span class="lnum">  14:  </span>            <span class="kwrd">public</span> <span class="kwrd">bool</span> IsActive { get { <span class="kwrd">return</span> _isActive; } }</pre>
+</div>
+
+<p>This code creates property called <code>IsActive</code>. This property allows code using the struct to access the <code>_isActive</code> field.&#160; Because the property only defines a <code>get</code> accessor, the access in read-only.&#160; Properties can also define a set accessor to allow right access to the property.</p>
+
+<div class="csharpcode">
+  <pre><span class="lnum">  15:  </span>&#160;</pre>
+
+  <pre><span class="lnum">  16:  </span>            <span class="kwrd">public</span> <span class="kwrd">override</span> <span class="kwrd">string</span> ToString()</pre>
+
+  <pre><span class="lnum">  17:  </span>            {</pre>
+
+  <pre><span class="lnum">  18:  </span>                <span class="kwrd">string</span> mantissa = (_isNegative ? <span class="str">&quot;-&quot;</span> : <span class="str">&quot;&quot;</span>) + _mantissa;</pre>
+
+  <pre><span class="lnum">  19:  </span>                <span class="kwrd">string</span> exponent = _inExponent ? <span class="str">&quot;e&quot;</span> + (_expIsNegative ? <span class="str">&quot;-&quot;</span> : <span class="str">&quot;+&quot;</span>) + _exponent : <span class="str">&quot;&quot;</span>;</pre>
+
+  <pre><span class="lnum">  20:  </span>                <span class="kwrd">return</span> mantissa + exponent;</pre>
+
+  <pre><span class="lnum">  21:  </span>            }</pre>
+</div>
+
+<p>All classes and structs in C# ultimately derive from the <code>object</code> class, so they all inherit the <code>ToString()</code> method.&#160; The above code overrides the method defined by <code>object</code> (hence the <code>override</code> keyword) and returns a string representation of the content of the input line.</p>
+
+<div class="csharpcode">
+  <pre><span class="lnum">  22:  </span>&#160;</pre>
+
+  <pre><span class="lnum">  23:  </span>            <span class="kwrd">public</span> <span class="kwrd">double</span> ToDouble()</pre>
+
+  <pre><span class="lnum">  24:  </span>            {</pre>
+
+  <pre><span class="lnum">  25:  </span>                <span class="kwrd">return</span> <span class="kwrd">double</span>.Parse(<span class="kwrd">this</span>.ToString());</pre>
+
+  <pre><span class="lnum">  26:  </span>            }</pre>
+</div>
+
+<p>The input line also needs to be accessed as a double so the calculator can add it to the calculation stack.</p>
+
+<div class="csharpcode">
+  <pre><span class="lnum">  27:  </span>            </pre>
+
+  <pre><span class="lnum">  28:  </span>            <span class="kwrd">public</span> <span class="kwrd">void</span> Clear()</pre>
+
+  <pre><span class="lnum">  29:  </span>            {</pre>
+
+  <pre><span class="lnum">  30:  </span>                _mantissa = <font color="#006080">null</font>;</pre>
+
+  <pre><span class="lnum">  31:  </span>                _exponent = <font color="#006080">null</font>;</pre>
+
+  <pre><span class="lnum">  32:  </span>                _isNegative = <span class="kwrd">false</span>;</pre>
+
+  <pre><span class="lnum">  33:  </span>                _expIsNegative = <span class="kwrd">false</span>;</pre>
+
+  <pre><span class="lnum">  34:  </span>                _inExponent = <span class="kwrd">false</span>;</pre>
+
+  <pre><span class="lnum">  35:  </span>                _isActive = <span class="kwrd">false</span>;</pre>
+
+  <pre><span class="lnum">  36:  </span>            }</pre>
+</div>
+
+<p>The <code>Clear</code> method resets the input line to its default starting values.&#160; The <code>AddChar</code> method below is the core of the input line struct.&#160; It takes an input character and processes it, adding it to the input string, or updating the state of the input line as needed.&#160; It returns <code>true</code> if the character is valid and was used, or <code>false</code> otherwise.</p>
+
+<div class="csharpcode">
+  <pre><span class="lnum">  37:  </span>&#160;</pre>
+
+  <pre><span class="lnum">  38:  </span>            <span class="kwrd">public</span> <span class="kwrd">bool</span> AddChar(<span class="kwrd">char</span> inputCharacter)</pre>
+
+  <pre><span class="lnum">  39:  </span>            {</pre>
+
+  <pre><span class="lnum">  40:  </span>                <span class="kwrd">if</span> (inputCharacter &gt;= <span class="str">'0'</span> &amp;&amp; inputCharacter &lt;= <span class="str">'9'</span>)</pre>
+
+  <pre><span class="lnum">  41:  </span>                {</pre>
+
+  <pre><span class="lnum">  42:  </span>                    <span class="kwrd">if</span> (_inExponent)</pre>
+
+  <pre><span class="lnum">  43:  </span>                    {</pre>
+
+  <pre><span class="lnum">  44:  </span>                        _exponent += inputCharacter;</pre>
+
+  <pre><span class="lnum">  45:  </span>                    }</pre>
+
+  <pre><span class="lnum">  46:  </span>                    <span class="kwrd">else</span></pre>
+
+  <pre><span class="lnum">  47:  </span>                    {</pre>
+
+  <pre><span class="lnum">  48:  </span>                        _mantissa += inputCharacter;</pre>
+
+  <pre><span class="lnum">  49:  </span>                    }</pre>
+
+  <pre><span class="lnum">  50:  </span>                }</pre>
+
+  <pre><span class="lnum">  51:  </span>                <span class="kwrd">else</span></pre>
+
+  <pre><span class="lnum">  52:  </span>                {</pre>
+
+  <pre><span class="lnum">  53:  </span>                    <span class="kwrd">switch</span> (inputCharacter)</pre>
+
+  <pre><span class="lnum">  54:  </span>                    {</pre>
+
+  <pre><span class="lnum">  55:  </span>                        <span class="kwrd">case</span> <span class="str">'.'</span>:</pre>
+
+  <pre><span class="lnum">  56:  </span>                            <span class="kwrd">if</span> (!_inExponent &amp;&amp; !_mantissa.Contains(<span class="str">&quot;.&quot;</span>))</pre>
+
+  <pre><span class="lnum">  57:  </span>                            {</pre>
+
+  <pre><span class="lnum">  58:  </span>                                _mantissa += inputCharacter;</pre>
+
+  <pre><span class="lnum">  59:  </span>                            }</pre>
+
+  <pre><span class="lnum">  60:  </span>                            <span class="kwrd">break</span>;</pre>
+
+  <pre><span class="lnum">  61:  </span>&#160;</pre>
+
+  <pre><span class="lnum">  62:  </span>                        <span class="kwrd">case</span> <span class="str">'_'</span>:</pre>
+
+  <pre><span class="lnum">  63:  </span>                            <span class="kwrd">if</span> (_inExponent)</pre>
+
+  <pre><span class="lnum">  64:  </span>                            {</pre>
+
+  <pre><span class="lnum">  65:  </span>                                _expIsNegative = !_expIsNegative;</pre>
+
+  <pre><span class="lnum">  66:  </span>                            }</pre>
+
+  <pre><span class="lnum">  67:  </span>                            <span class="kwrd">else</span> <span class="kwrd">if</span> (_isActive)</pre>
+
+  <pre><span class="lnum">  68:  </span>                            {</pre>
+
+  <pre><span class="lnum">  69:  </span>                                _isNegative = !_isNegative;</pre>
+
+  <pre><span class="lnum">  70:  </span>                            }</pre>
+
+  <pre><span class="lnum">  71:  </span>                            <span class="kwrd">else</span></pre>
+
+  <pre><span class="lnum">  72:  </span>                            {</pre>
+
+  <pre><span class="lnum">  73:  </span>                                <span class="kwrd">return</span> <span class="kwrd">false</span>;</pre>
+
+  <pre><span class="lnum">  74:  </span>                            }</pre>
+
+  <pre><span class="lnum">  75:  </span>                            <span class="kwrd">break</span>;</pre>
+
+  <pre><span class="lnum">  76:  </span>&#160;</pre>
+
+  <pre><span class="lnum">  77:  </span>                        <span class="kwrd">case</span> <span class="str">'E'</span>:</pre>
+
+  <pre><span class="lnum">  78:  </span>                            _inExponent = <span class="kwrd">true</span>;</pre>
+
+  <pre><span class="lnum">  79:  </span>                            <span class="kwrd">break</span>;</pre>
+
+  <pre><span class="lnum">  80:  </span>&#160;</pre>
+
+  <pre><span class="lnum">  81:  </span>                        <span class="kwrd">case</span> <span class="str">'\b'</span>:</pre>
+
+  <pre><span class="lnum">  82:  </span>                            <span class="kwrd">if</span> (_inExponent)</pre>
+
+  <pre><span class="lnum">  83:  </span>                            {</pre>
+
+  <pre><span class="lnum">  84:  </span>                                <span class="kwrd">if</span> (_exponent.Length &gt; 0)</pre>
+
+  <pre><span class="lnum">  85:  </span>                                {</pre>
+
+  <pre><span class="lnum">  86:  </span>                                    _exponent = _exponent.Remove(_exponent.Length - 1);</pre>
+
+  <pre><span class="lnum">  87:  </span>                                }</pre>
+
+  <pre><span class="lnum">  88:  </span>                                <span class="kwrd">else</span></pre>
+
+  <pre><span class="lnum">  89:  </span>                                {</pre>
+
+  <pre><span class="lnum">  90:  </span>                                    _inExponent = <span class="kwrd">false</span>;</pre>
+
+  <pre><span class="lnum">  91:  </span>                                }</pre>
+
+  <pre><span class="lnum">  92:  </span>                                <span class="kwrd">return</span> <span class="kwrd">true</span>;</pre>
+
+  <pre><span class="lnum">  93:  </span>                            }</pre>
+
+  <pre><span class="lnum">  94:  </span>                            <span class="kwrd">else</span> <span class="kwrd">if</span> (_isActive)</pre>
+
+  <pre><span class="lnum">  95:  </span>                            {</pre>
+
+  <pre><span class="lnum">  96:  </span>                                <span class="kwrd">if</span> (_mantissa.Length &gt; 0)</pre>
+
+  <pre><span class="lnum">  97:  </span>                                {</pre>
+
+  <pre><span class="lnum">  98:  </span>                                    _mantissa = _mantissa.Remove(_mantissa.Length - 1);</pre>
+
+  <pre><span class="lnum">  99:  </span>                                }</pre>
+
+  <pre><span class="lnum"> 100:  </span>                                <span class="kwrd">else</span></pre>
+
+  <pre><span class="lnum"> 101:  </span>                                {</pre>
+
+  <pre><span class="lnum"> 102:  </span>                                    _isActive = <span class="kwrd">false</span>;</pre>
+
+  <pre><span class="lnum"> 103:  </span>                                    <span class="kwrd">return</span> <span class="kwrd">false</span>;</pre>
+
+  <pre><span class="lnum"> 104:  </span>                                }</pre>
+
+  <pre><span class="lnum"> 105:  </span>                                <span class="kwrd">return</span> <span class="kwrd">true</span>;</pre>
+
+  <pre><span class="lnum"> 106:  </span>                            }</pre>
+
+  <pre><span class="lnum"> 107:  </span>                            <span class="kwrd">return</span> <span class="kwrd">false</span>;</pre>
+
+  <pre><span class="lnum"> 108:  </span>                            </pre>
+
+  <pre><span class="lnum"> 109:  </span>                        <span class="kwrd">default</span>:</pre>
+
+  <pre><span class="lnum"> 110:  </span>                            <span class="kwrd">return</span> <span class="kwrd">false</span>;</pre>
+
+  <pre><span class="lnum"> 111:  </span>                    }</pre>
+
+  <pre><span class="lnum"> 112:  </span>                }</pre>
+
+  <pre><span class="lnum"> 113:  </span>                _isActive = <span class="kwrd">true</span>;</pre>
+
+  <pre><span class="lnum"> 114:  </span>                <span class="kwrd">return</span> <span class="kwrd">true</span>;</pre>
+
+  <pre><span class="lnum"> 115:  </span>            }</pre>
+
+  <pre><span class="lnum"> 116:  </span>        }</pre>
+
+  <pre><span class="lnum"> 117:  </span>    }</pre>
+
+  <pre><span class="lnum"> 118:  </span>}</pre>
+</div>
+
+<p>Now that I’ve briefly described the code of the <code>InputLine</code> struct , we can look at the differences between a <strong>struct</strong> and a <strong>class</strong>.&#160; </p>
+
+<p>The main difference is that classes are reference types, allocated from the heap, whereas structs are value types, allocated from the stack.&#160; Memory allocated from the heap is not initialised before it is used, but memory allocated from the stack has all its bits initialised to 0.&#160; For this reason, when a struct is instantiated using the default parameterless constructor all it’s member fields are set to their type-equivalent of 0.&#160; Strings are set to null, numeric types set to 0, boolean fields set to null, etc. </p>
+
+<p>Another consequence of this difference is that you cannot inherit from a struct, nor can a struct inherit from a reference type.&#160; All structs inherit from <code>System.ValueType</code>.</p>
+
+<p>The other main difference is that, because structs already have a parameterless constructor, you cannot declare a parameterless constructor yourself.&#160; Any constructors written for a struct must have one or more parameters.</p>
+
+<p>I think that will do it for this time.&#160; Next post we’ll look at the classes that define the operations of the calculator and, as a consequence, delegate types.</p>  

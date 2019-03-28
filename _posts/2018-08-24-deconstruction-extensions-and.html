@@ -1,0 +1,126 @@
+---
+layout: post
+title: Deconstruction Extensions and Multitargeting
+date: '2018-08-24T20:58:00.001+10:00'
+tags:
+- Deconstructors
+- C#
+modified_time: '2018-08-24T21:08:35.695+10:00'
+---
+
+<p>In the <a href="{{ site.baseurl }}{% post_url 2018-06-22-fun-with-deconstructors %}">last post</a> I looked at Deconstructors in C# 7.0. I thought I'd create a library with a few extension methods to add Deconstructor support for Arrays and KeyValuePairs.</p><p>I started with adding extension methods for arrays. I developed the methods test-first and everything went pretty much as I expected it to. I ended up with methods supporting deconstruction of arrays from 2 elements up to 9. Here's the code for the 2-element method and its tests.<pre><code>public static class ArrayDeconstructors
+<br />{
+<br />    public static void Deconstruct&lt;t&gt;(this T[] array, out T item1, out T item2)
+<br />    {
+<br />        EnsureNotNull(array, nameof(array));
+<br />        EnsureMinimumLength(array, 2, nameof(array));
+<br />
+<br />        item1 = array[0];<br />
+<br />        item2 = array[1];
+<br />    }
+<br />}
+<br />
+<br />public class TwoElementDeconstructorShould : ArrayDeconstructionTest
+<br />{
+<br />    public TwoElementDeconstructorShould() 
+<br />        : base(elementCount: 2)
+<br />    {
+<br />    }
+<br />
+<br />    protected override void TestDeconstruction&lt;T>(T[] array)
+<br />    {
+<br />        var (first, second) = array;
+<br />
+<br />        first.Should().Be(array[0]);
+<br />        second.Should().Be(array[1]);
+<br />    }
+<br />}
+<br />
+<br />public abstract class ArrayDeconstructionTest
+<br />{
+<br />    public ArrayDeconstructionTest(int elementCount)
+<br />    {
+<br />        ElementCount = elementCount;
+<br />    }
+<br />
+<br />    public int ElementCount { get; }
+<br />
+<br />    protected string ExpectedUndersizeArrayMessage =>
+<br />        $"The provided array must have at least {ElementCount} elements." +
+<br />        Environment.NewLine + "Parameter Name: array";
+<br />
+<br />    [Fact]
+<br />    public void ThrowArgumentNullExceptionGivenNullInput()
+<br />    {
+<br />        int[] array = null;
+<br />
+<br />        Action deconstruction = () => TestDeconstruction(array);
+<br />
+<br />        deconstruction.Should().Throw&lt;ArgumentNullException>().WithMessage("*array");
+<br />    }
+<br />
+<br />    [Fact]
+<br />    public void ThrowArgumentExceptionGivenEmptyInt32Array()
+<br />    {
+<br />        var array = new int[0];
+<br />
+<br />        Action deconstruction = () => TestDeconstruction(array);
+<br />
+<br />        deconstruction.Should().Throw&lt;ArgumentException>()
+<br />            .WithMessage(ExpectedUndersizeArrayMessage);
+<br />    }
+<br />
+<br />    [Fact]
+<br />    public void ThrowArgumentExceptionGivenInt32ArrayWithInsufficientElements()
+<br />    {
+<br />        var array = new int[ElementCount - 1];
+<br />
+<br />        Action deconstruction = () => TestDeconstruction(array);
+<br />
+<br />        deconstruction.Should().Throw&lt;ArgumentException>()
+<br />            .WithMessage(ExpectedUndersizeArrayMessage);
+<br />    }
+<br />
+<br />    [Fact]
+<br />    public void DeconstructInt32ArrayOfMinimumSizeAsExpected()
+<br />    {
+<br />        var array = Enumerable.Range(1, ElementCount).ToArray();
+<br />
+<br />        TestDeconstruction(array);
+<br />    }
+<br />
+<br />    [Fact]
+<br />    public void ReturnFirstElementsOfLargerArray()
+<br />    {
+<br />        var array = Enumerable.Range(1, ElementCount).Reverse().ToArray();
+<br />
+<br />        TestDeconstruction(array);
+<br />    }
+<br />
+<br />    [Fact]
+<br />    public void DeconstructStringArrayAsExpected()
+<br />    {
+<br />        var array = new[] { "foo", "bar", "baz", "qux", "quux", "quuz", "corge", "grault", "garply", "waldo" };
+<br />
+<br />        TestDeconstruction(array);
+<br />    }
+<br />
+<br />    protected abstract void TestDeconstruction&lt;T>(T[] array);
+<br />}</code></pre><p>Things did not go as expected when I started on support for <code>KeyValuePair&lt;K,V&gt;</code>. I'd created the project targeting .Net Standard 1.1, with a test project targeting .Net Core 2.1. I wrote the first test for a <code>KeyValuePair&lt;K,V&gt;</code>. Checking for null input is moot as KeyValuePair is a value type. So the first test I wrote was for an actual deconstruction. Here it is:</p><pre><code>[Fact]
+<br />public void DeconstructKeyValuePairOfInt32Int32()
+<br />{
+<br />    var kvp = new KeyValuePair&lt;int, int>(2, 4);
+<br />
+<br />    var (key, value) = kvp;
+<br />
+<br />    key.Should().Be(2);
+<br />    value.Should().Be(4);
+<br />}
+<br /></code></pre><p>Then I ran the test, expecting it to be red, actually expecting it to not even compile when the compiler couldn't find a Deconstruct method. Imagine my surprise when it not only compiled, but ran green! I had a passing test without writing a line of code.</p><p>Turns out that a <code>Deconstruct</code> method was added to <code>KeyValuePair&lt;K,V&gt;</code> in .Net Core 2.1. Here's what it looks like:</p><pre><code>[EditorBrowsable(EditorBrowsableState.Never)]
+<br />public void Deconstruct(out TKey key, out TValue value)
+<br />{
+<br />    key = Key;
+<br />    value = Value;
+<br />}</code></pre><p>The attribute decorating it hides the method from Intellisense, but the compiler knows it's there, and it just works.</p><p>So where to for my class library? I wanted the library to be able to be used in projects targeting any platform, so .Net Standard 1.1 was the right choice there. But a test project needs to target a concrete framework. I changed the test project to target .Net Core 2.0 and my test failed. That is, it failed to compile. I added a degenerate extension method so that the test would compile, but still not pass. Then I modified the test project to target multiple frameworks. In this case it was as simple as changing one line in the .csproj file from </p><pre><code class="language-xml">&lt;TargetFramework>netcoreapp2.1&lt;/TargetFramework>
+<br /></code></pre><p>to</p><pre><code class="language-xml">&lt;TargetFrameworks>netcoreapp2.1;netcoreapp1.1;net452;net47&lt;/TargetFrameworks>
+<br /></code></pre><p>I then ran dotnet test and it compiled and ran the tests for each of the targeted frameworks individually. The test passed for .Net Core 2.1, but failed for the others. Cool. So then I was able to finish the extension method, and get the class library to where I wanted it to be.</p><p>You can see the code on <a href="https://github.com/drewjcooper/deconstructors">GitHub</a>. Next step is to publish a NuGet package just on the off chance that someone might actually want to use it.</p>

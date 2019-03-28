@@ -1,0 +1,149 @@
+---
+layout: post
+title: 'Exercise 4 – Reynold’s Number: a basic class'
+date: '2010-07-13T20:19:00.001+10:00'
+tags:
+- C# Specifics
+- C# Exercise
+- ".NET Specifics"
+modified_time: '2010-07-13T22:54:16.321+10:00'
+---
+
+<p>The fourth of <a href="http://www.jobsnake.com/seek/articles/index.cgi?openarticle&amp;8533" target="_blank">Prashant's exercises</a> is:</p>  <blockquote>   <p>Reynolds number is calculated using formula (D*v*rho)/mu Where D = Diameter, V= velocity, rho = density mu = viscosity      <br />Write a program that will accept all values in appropriate units (Don't worry about unit conversion)       <br />If number is &lt; 2100, display Laminar flow,       <br />If it’s between 2100 and 4000 display 'Transient flow' and       <br />if more than '4000', display 'Turbulent Flow' (If, else, then...) </p> </blockquote>  <p>In working this solution I decided to declare a class to help in the calculation.&#160; The solution also shows some details of reading input from the console.</p> <a name='more'></a>  <p>For this post I've broken the code into two boxes.&#160; The first, as shown by the line numbers, is actually the second part of the program, but I want to explain it first.</p>  <div class="csharpcode">   <pre><span class="lnum">  29:  </span><span class="kwrd">class</span> Reynolds</pre>
+
+  <pre><span class="lnum">  30:  </span>{</pre>
+
+  <pre><span class="lnum">  31:  </span>    <span class="kwrd">public</span> <span class="kwrd">double</span> density;</pre>
+
+  <pre><span class="lnum">  32:  </span>    <span class="kwrd">public</span> <span class="kwrd">double</span> diameter;</pre>
+
+  <pre><span class="lnum">  33:  </span>    <span class="kwrd">public</span> <span class="kwrd">double</span> velocity;</pre>
+
+  <pre><span class="lnum">  34:  </span>    <span class="kwrd">public</span> <span class="kwrd">double</span> viscosity;</pre>
+
+  <pre><span class="lnum">  35:  </span>&#160;</pre>
+
+  <pre><span class="lnum">  36:  </span>    <span class="kwrd">public</span> <span class="kwrd">double</span> Number</pre>
+
+  <pre><span class="lnum">  37:  </span>    {</pre>
+
+  <pre><span class="lnum">  38:  </span>        get</pre>
+
+  <pre><span class="lnum">  39:  </span>        {</pre>
+
+  <pre><span class="lnum">  40:  </span>            <span class="kwrd">return</span> density * diameter * velocity / viscosity;</pre>
+
+  <pre><span class="lnum">  41:  </span>        }</pre>
+
+  <pre><span class="lnum">  42:  </span>    }</pre>
+
+  <pre><span class="lnum">  43:  </span>&#160;</pre>
+
+  <pre><span class="lnum">  44:  </span>    <span class="kwrd">public</span> <span class="kwrd">string</span> FlowType</pre>
+
+  <pre><span class="lnum">  45:  </span>    {</pre>
+
+  <pre><span class="lnum">  46:  </span>        get</pre>
+
+  <pre><span class="lnum">  47:  </span>        {</pre>
+
+  <pre><span class="lnum">  48:  </span>            <span class="kwrd">if</span> (Number &lt; 2100)</pre>
+
+  <pre><span class="lnum">  49:  </span>            {</pre>
+
+  <pre><span class="lnum">  50:  </span>                <span class="kwrd">return</span> <span class="str">&quot;Laminar&quot;</span>;</pre>
+
+  <pre><span class="lnum">  51:  </span>            }</pre>
+
+  <pre><span class="lnum">  52:  </span>            <span class="kwrd">else</span> <span class="kwrd">if</span> (Number &lt; 4000)</pre>
+
+  <pre><span class="lnum">  53:  </span>            {</pre>
+
+  <pre><span class="lnum">  54:  </span>                <span class="kwrd">return</span> <span class="str">&quot;Transient&quot;</span>;</pre>
+
+  <pre><span class="lnum">  55:  </span>            }</pre>
+
+  <pre><span class="lnum">  56:  </span>            <span class="kwrd">else</span></pre>
+
+  <pre><span class="lnum">  57:  </span>            {</pre>
+
+  <pre><span class="lnum">  58:  </span>                <span class="kwrd">return</span> <span class="str">&quot;Turbulent&quot;</span>;</pre>
+
+  <pre><span class="lnum">  59:  </span>            }</pre>
+
+  <pre><span class="lnum">  60:  </span>        }</pre>
+
+  <pre><span class="lnum">  61:  </span>    }</pre>
+
+  <pre><span class="lnum">  62:  </span>}</pre>
+</div>
+
+<p>This is the declaration of the Reynolds <strong>class</strong>.&#160; The class has 4 <strong>fields</strong> which hold values for the four variables in the equation, and two <strong>properties</strong>, <code>Number</code> and <code>FlowType</code>, which return values based on the calculation of the formula.&#160; As you’ll see below, properties of a class are accessed that same way as fields, but as seen above they can contain code to calculate, or otherwise determine the value to be returned.&#160; The two properties here are <strong>read-only properties</strong> because they only have a <code>get</code> clause.&#160; It is also possible to create <strong>write-only properties</strong> (only a <code>set</code> clause) and <strong>read-write properties</strong> (both <code>get</code> and <code>set</code>).&#160; Note that all the <strong>fields</strong> and <strong>properties</strong> are declared <code>public</code> so that they’re accessible from outside the class.&#160; Common code conventions generally dictate that fields should be declared <code>private</code>, and that applicable <code>public</code>, <code>protected</code>, or <code>internal</code> properties should be created to allow the necessary access.</p>
+
+<p>The second code block shows the main part of the program (no pun intended).</p>
+
+<div class="csharpcode">
+  <pre><span class="lnum">   1:  </span><span class="kwrd">using</span> System;</pre>
+
+  <pre><span class="lnum">   2:  </span>&#160;</pre>
+
+  <pre><span class="lnum">   3:  </span><span class="kwrd">class</span> MainClass</pre>
+
+  <pre><span class="lnum">   4:  </span>{</pre>
+
+  <pre><span class="lnum">   5:  </span>    <span class="kwrd">static</span> <span class="kwrd">double</span> ReadDouble ( <span class="kwrd">string</span> inputPrompt = <span class="str">&quot;Enter a number&quot;</span>)</pre>
+
+  <pre><span class="lnum">   6:  </span>    {</pre>
+
+  <pre><span class="lnum">   7:  </span>        <span class="kwrd">double</span> inputValue;</pre>
+
+  <pre><span class="lnum">   8:  </span>&#160;</pre>
+
+  <pre><span class="lnum">   9:  </span>        <span class="kwrd">do</span></pre>
+
+  <pre><span class="lnum">  10:  </span>        {</pre>
+
+  <pre><span class="lnum">  11:  </span>            Console.Write(inputPrompt + <span class="str">&quot;:  &quot;</span>);</pre>
+
+  <pre><span class="lnum">  12:  </span>        }</pre>
+
+  <pre><span class="lnum">  13:  </span>        <span class="kwrd">while</span> (!<span class="kwrd">double</span>.TryParse(Console.ReadLine(), <span class="kwrd">out</span> inputValue));</pre>
+
+  <pre><span class="lnum">  14:  </span>        <span class="kwrd">return</span> inputValue;</pre>
+
+  <pre><span class="lnum">  15:  </span>    }</pre>
+
+  <pre><span class="lnum">  16:  </span>&#160;</pre>
+
+  <pre><span class="lnum">  17:  </span>    <span class="kwrd">static</span> <span class="kwrd">void</span> Main()</pre>
+
+  <pre><span class="lnum">  18:  </span>    {</pre>
+
+  <pre><span class="lnum">  19:  </span>        Reynolds reynolds = <span class="kwrd">new</span> Reynolds();</pre>
+
+  <pre><span class="lnum">  20:  </span>        Console.WriteLine(<span class="str">&quot;Calculate Reynold's Number and flow characteristic&quot;</span>);</pre>
+
+  <pre><span class="lnum">  21:  </span>        reynolds.density = ReadDouble(<span class="str">&quot;Enter the Density (\x03c1)&quot;</span>);</pre>
+
+  <pre><span class="lnum">  22:  </span>        reynolds.diameter = ReadDouble(<span class="str">&quot;Enter the Diameter (D)&quot;</span>);</pre>
+
+  <pre><span class="lnum">  23:  </span>        reynolds.velocity = ReadDouble(<span class="str">&quot;Enter the Velocity (v)&quot;</span>);</pre>
+
+  <pre><span class="lnum">  24:  </span>        reynolds.viscosity = ReadDouble(<span class="str">&quot;Enter the Viscosity (\x03bc)&quot;</span>);</pre>
+
+  <pre><span class="lnum">  25:  </span>        Console.WriteLine(<span class="str">&quot;Reynold's Number = &quot;</span> + reynolds.Number.ToString() + <span class="str">&quot; (&quot;</span> + reynolds.FlowType + <span class="str">&quot; flow)&quot;</span>);</pre>
+
+  <pre><span class="lnum">  26:  </span>    }</pre>
+
+  <pre><span class="lnum">  27:  </span>}</pre>
+
+  <pre><span class="lnum">  28:  </span>&#160;</pre>
+</div>
+
+<p>To keep the code simple I created a method (<code>ReadDouble</code>) to prompt the user for a value from the console, and continue to prompt until a valid <code>double</code> value is entered.&#160; We’ve seen <strong>optional parameters</strong> before.&#160; Here I’ve declared <code>inputPrompt</code> with a default prompt that will be used if none is specified in the method call.&#160; This method also shows use of C#’s <code>do {} while ()</code> loop construct, which should be immediately familiar to any C/C++ programmer.&#160; C# also has a <code>while () {}</code> construct, with the loop condition at the front-end.</p>
+
+<p>There’s nothing terribly special about the <code>Main</code> method.&#160; First thing it does is to create an instance of the <code>Reynolds</code> <strong>class</strong>, and assign it to a <strong>variable</strong> called <code>reynolds</code>.&#160; Note that the class and variable names differ only by case.&#160; As C# is case-sensitive language this isn’t a problem, but it is frowned upon because it can lead to problems when interoperability with a case-insensitive language, like VB.NET, is required.&#160; </p>
+
+<p>The <code>ReadDouble</code> method is called a number of times to prompt for each of the required values in turn, and the returned values are assigned to the appropriate fields in the Reynolds class.&#160; One thing to note here is the use of Unicode escape sequences in a couple of the prompt strings.&#160; These are the codes for the greek letters mu and rho.&#160; All strings in C# are Unicode strings, so there’s no need to play with different types and functions as in C/C++.</p>
+
+<p>In reading through the code above you probably thought, “hang about, what happens if I enter zero for the Viscosity (the divisor)?”&#160; That’s a good question because most languages would throw an exception in that case, and I haven’t done anything to trap that.&#160; You’re going to have to wait for the next post for the answer, because that is actually the subject of Exercise 5.</p>  

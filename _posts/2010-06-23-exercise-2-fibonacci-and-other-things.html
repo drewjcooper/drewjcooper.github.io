@@ -1,0 +1,207 @@
+---
+layout: post
+title: Exercise 2 – Fibonacci, and other things
+date: '2010-06-23T22:22:00.001+10:00'
+tags:
+- C# Exercise
+modified_time: '2010-06-23T22:47:11.769+10:00'
+---
+
+<p>Prashant’s <a href="http://www.jobsnake.com/seek/articles/index.cgi?openarticle&amp;8533" target="_blank">second exercise</a> is:</p>  <blockquote></blockquote>  <blockquote>   <p>Fibonacci series, swapping two variables, finding maximum/minimum among a list of numbers.</p> </blockquote>  <p>So in this post we get to play with a bit of recursion, and I’ve thrown in some parametric types for good measure.</p> <a name='more'></a>  <p>The code I came up with for this exercise is as follows:</p>  <div class="csharpcode">   <pre><span class="lnum">   1:  </span><span class="kwrd">using</span> System;</pre>
+
+  <pre><span class="lnum">   2:  </span>&#160;</pre>
+
+  <pre><span class="lnum">   3:  </span><span class="kwrd">class</span> MainClass</pre>
+
+  <pre><span class="lnum">   4:  </span>{</pre>
+
+  <pre><span class="lnum">   5:  </span>    <span class="kwrd">static</span> <span class="kwrd">ulong</span> Fibonacci1(<span class="kwrd">uint</span> N)</pre>
+
+  <pre><span class="lnum">   6:  </span>    {</pre>
+
+  <pre><span class="lnum">   7:  </span>        <span class="kwrd">switch</span> (N)</pre>
+
+  <pre><span class="lnum">   8:  </span>        {</pre>
+
+  <pre><span class="lnum">   9:  </span>            <span class="kwrd">case</span> 0:</pre>
+
+  <pre><span class="lnum">  10:  </span>                <span class="kwrd">return</span> 0;</pre>
+
+  <pre><span class="lnum">  11:  </span>            <span class="kwrd">case</span> 1:</pre>
+
+  <pre><span class="lnum">  12:  </span>                <span class="kwrd">return</span> 1;</pre>
+
+  <pre><span class="lnum">  13:  </span>            <span class="kwrd">default</span>:</pre>
+
+  <pre><span class="lnum">  14:  </span>                <span class="kwrd">ulong</span> FN = 1, FNMinusTwo, FNMinusOne = 0;</pre>
+
+  <pre><span class="lnum">  15:  </span>                <span class="kwrd">while</span> (N &gt; 1)</pre>
+
+  <pre><span class="lnum">  16:  </span>                {</pre>
+
+  <pre><span class="lnum">  17:  </span>                    FNMinusTwo = FNMinusOne;</pre>
+
+  <pre><span class="lnum">  18:  </span>                    FNMinusOne = FN;</pre>
+
+  <pre><span class="lnum">  19:  </span>                    FN = FNMinusTwo + FNMinusOne;</pre>
+
+  <pre><span class="lnum">  20:  </span>                    N--;</pre>
+
+  <pre><span class="lnum">  21:  </span>                }</pre>
+
+  <pre><span class="lnum">  22:  </span>                <span class="kwrd">return</span> FN;</pre>
+
+  <pre><span class="lnum">  23:  </span>        }</pre>
+
+  <pre><span class="lnum">  24:  </span>    }</pre>
+
+  <pre><span class="lnum">  25:  </span>    </pre>
+
+  <pre><span class="lnum">  26:  </span>    <span class="kwrd">static</span> <span class="kwrd">ulong</span> Fibonacci2(<span class="kwrd">uint</span> N, <span class="kwrd">ulong</span> NMinusTwo = 0, <span class="kwrd">ulong</span> NMinusOne = 1)</pre>
+
+  <pre><span class="lnum">  27:  </span>    {</pre>
+
+  <pre><span class="lnum">  28:  </span>        <span class="kwrd">switch</span> (N)</pre>
+
+  <pre><span class="lnum">  29:  </span>        {</pre>
+
+  <pre><span class="lnum">  30:  </span>            <span class="kwrd">case</span> 0:</pre>
+
+  <pre><span class="lnum">  31:  </span>                <span class="kwrd">return</span> NMinusTwo;</pre>
+
+  <pre><span class="lnum">  32:  </span>            <span class="kwrd">case</span> 1:</pre>
+
+  <pre><span class="lnum">  33:  </span>                <span class="kwrd">return</span> NMinusOne;</pre>
+
+  <pre><span class="lnum">  34:  </span>            <span class="kwrd">default</span>:</pre>
+
+  <pre><span class="lnum">  35:  </span>                <span class="kwrd">return</span> Fibonacci2(N - 1, NMinusOne, NMinusOne + NMinusTwo);</pre>
+
+  <pre><span class="lnum">  36:  </span>        }</pre>
+
+  <pre><span class="lnum">  37:  </span>    }</pre>
+
+  <pre><span class="lnum">  38:  </span>&#160;</pre>
+
+  <pre><span class="lnum">  39:  </span>    <span class="kwrd">static</span> <span class="kwrd">void</span> Swap&lt;T&gt;(<span class="kwrd">ref</span> T var1, <span class="kwrd">ref</span> T var2) {</pre>
+
+  <pre><span class="lnum">  40:  </span>        T tempvar = var1;</pre>
+
+  <pre><span class="lnum">  41:  </span>        var1 = var2;</pre>
+
+  <pre><span class="lnum">  42:  </span>        var2 = tempvar;</pre>
+
+  <pre><span class="lnum">  43:  </span>    }</pre>
+
+  <pre><span class="lnum">  44:  </span>    </pre>
+
+  <pre><span class="lnum">  45:  </span>    <span class="kwrd">static</span> <span class="kwrd">int</span> Max(<span class="kwrd">int</span>[] Numbers) {</pre>
+
+  <pre><span class="lnum">  46:  </span>        <span class="kwrd">int</span> maxint = Numbers[0];</pre>
+
+  <pre><span class="lnum">  47:  </span>        <span class="kwrd">foreach</span> (<span class="kwrd">int</span> tempint <span class="kwrd">in</span> Numbers) {</pre>
+
+  <pre><span class="lnum">  48:  </span>            <span class="kwrd">if</span> (tempint &gt; maxint) maxint = tempint;</pre>
+
+  <pre><span class="lnum">  49:  </span>        }</pre>
+
+  <pre><span class="lnum">  50:  </span>        <span class="kwrd">return</span> maxint;</pre>
+
+  <pre><span class="lnum">  51:  </span>    }</pre>
+
+  <pre><span class="lnum">  52:  </span>&#160;</pre>
+
+  <pre><span class="lnum">  53:  </span>    <span class="kwrd">static</span> <span class="kwrd">int</span> Min(<span class="kwrd">int</span>[] Numbers)</pre>
+
+  <pre><span class="lnum">  54:  </span>    {</pre>
+
+  <pre><span class="lnum">  55:  </span>        <span class="kwrd">int</span> minint = Numbers[0];</pre>
+
+  <pre><span class="lnum">  56:  </span>        <span class="kwrd">foreach</span> (<span class="kwrd">int</span> tempint <span class="kwrd">in</span> Numbers)</pre>
+
+  <pre><span class="lnum">  57:  </span>        {</pre>
+
+  <pre><span class="lnum">  58:  </span>            <span class="kwrd">if</span> (tempint &lt; minint) minint = tempint;</pre>
+
+  <pre><span class="lnum">  59:  </span>        }</pre>
+
+  <pre><span class="lnum">  60:  </span>        <span class="kwrd">return</span> minint;</pre>
+
+  <pre><span class="lnum">  61:  </span>    }</pre>
+
+  <pre><span class="lnum">  62:  </span>&#160;</pre>
+
+  <pre><span class="lnum">  63:  </span>    <span class="kwrd">static</span> <span class="kwrd">void</span> Main()</pre>
+
+  <pre><span class="lnum">  64:  </span>    {</pre>
+
+  <pre><span class="lnum">  65:  </span>        Console.WriteLine(<span class="str">&quot;Fibonacci series&quot;</span>);</pre>
+
+  <pre><span class="lnum">  66:  </span>        <span class="kwrd">for</span> (<span class="kwrd">uint</span> i = 0; i &lt;= 10; i++)</pre>
+
+  <pre><span class="lnum">  67:  </span>        {</pre>
+
+  <pre><span class="lnum">  68:  </span>            Console.WriteLine(<span class="str">&quot;F(&quot;</span> + i.ToString() + <span class="str">&quot;)\t&quot;</span> + Fibonacci1(i).ToString() + <span class="str">&quot;\t&quot;</span> + Fibonacci2(i).ToString());</pre>
+
+  <pre><span class="lnum">  69:  </span>        }</pre>
+
+  <pre><span class="lnum">  70:  </span>&#160;</pre>
+
+  <pre><span class="lnum">  71:  </span>        Console.WriteLine (<span class="str">&quot;\nSwapping int Variables&quot;</span>);</pre>
+
+  <pre><span class="lnum">  72:  </span>        <span class="kwrd">int</span> A = 5;</pre>
+
+  <pre><span class="lnum">  73:  </span>        <span class="kwrd">int</span> B = 10;</pre>
+
+  <pre><span class="lnum">  74:  </span>        Console.WriteLine(<span class="str">&quot;Before:\tA=&quot;</span> + A.ToString() + <span class="str">&quot;\tB=&quot;</span> + B.ToString());</pre>
+
+  <pre><span class="lnum">  75:  </span>        Swap(<span class="kwrd">ref</span> A, <span class="kwrd">ref</span> B);</pre>
+
+  <pre><span class="lnum">  76:  </span>        Console.WriteLine(<span class="str">&quot;Before:\tA=&quot;</span> + A.ToString() + <span class="str">&quot;\tB=&quot;</span> + B.ToString());</pre>
+
+  <pre><span class="lnum">  77:  </span>        </pre>
+
+  <pre><span class="lnum">  78:  </span>        Console.WriteLine(<span class="str">&quot;\nSwapping char Variables&quot;</span>);</pre>
+
+  <pre><span class="lnum">  79:  </span>        <span class="kwrd">char</span> C = <span class="str">'C'</span>;</pre>
+
+  <pre><span class="lnum">  80:  </span>        <span class="kwrd">char</span> D = <span class="str">'D'</span>;</pre>
+
+  <pre><span class="lnum">  81:  </span>        Console.WriteLine(<span class="str">&quot;Before:\tC=&quot;</span> + C.ToString() + <span class="str">&quot;\tD=&quot;</span> + D.ToString());</pre>
+
+  <pre><span class="lnum">  82:  </span>        Swap(<span class="kwrd">ref</span> C, <span class="kwrd">ref</span> D);</pre>
+
+  <pre><span class="lnum">  83:  </span>        Console.WriteLine(<span class="str">&quot;Before:\tC=&quot;</span> + C.ToString() + <span class="str">&quot;\tD=&quot;</span> + D.ToString());</pre>
+
+  <pre><span class="lnum">  84:  </span>&#160;</pre>
+
+  <pre><span class="lnum">  85:  </span>        <span class="kwrd">int</span>[] IntArray =  { 15, 4, 76, 53, 25, 63 };</pre>
+
+  <pre><span class="lnum">  86:  </span>        Console.WriteLine(<span class="str">&quot;\nArray = { 15, 4, 76, 53, 25, 63 }&quot;</span>);</pre>
+
+  <pre><span class="lnum">  87:  </span>        Console.WriteLine(<span class="str">&quot;Maximum = &quot;</span> + Max(IntArray).ToString());</pre>
+
+  <pre><span class="lnum">  88:  </span>        Console.WriteLine(<span class="str">&quot;Minimum = &quot;</span> + Min(IntArray).ToString());</pre>
+
+  <pre><span class="lnum">  89:  </span>    }</pre>
+
+  <pre><span class="lnum">  90:  </span>}</pre>
+</div>
+
+<p>For the Fibonacci numbers I decided to write two methods, each of which take an integer N, and return the Nth number in the Fibonacci series.&#160; The first method does this using a loop.&#160; The second is recursive and is a lot more brief.&#160; The methods show a few interesting aspects of C#.</p>
+
+<p>Line 14 declares 3 variables of type <strong>ulong</strong> (UInt64) which are then used to build the Fibonacci series.&#160; In C# all variables must be initialised before they are used in an expression.&#160; Failure to do so is a compile-time error.&#160; Line 14 initialises <code>FN</code> and <code>FNMinusOne</code> as they are declared, but leaves <code>FNMinusTwo</code> uninitialised.&#160; This is okay because <code>FNMinusTwo</code> is given a value in Line 17 before its first use in line 19.</p>
+
+<p>The other thing to notice about this method is that a parameter of a <strong><em>value type</em></strong> gets a copy of the value that is passed to it.&#160; Thus, although the method modifies the value of the parameter <code>N</code>, it doesn’t affect the value of the loop variable used in the <code>Main</code> function to print the series.</p>
+
+<p>The second Fibonacci function at line 26 shows the use of optional parameters.&#160; In C#, method parameters may be assigned a value in the method declaration.&#160; If the parameter is not passed a value when the method is called it gets the value set in the declaration.&#160; In this way the initial call to <code>Fibonacci2()</code> only has to specify <code>N</code>, and the initial value of the recursion parameters is specified in the method declaration.&#160; Of course, you could also specify values for these parameters in the call to the method, in which case the method would produce a different series of numbers.</p>
+
+<p>In order to solve the problem of swapping two variables I decided to create a generic method using type parameters.&#160; This method can be used to swap any two variables regardless of type, as long as they’re the same type.&#160; The method declaration on line 39 creates a type parameter <code>T</code> which is bound to a specific type when the method is called elsewhere the code.&#160; Notice that the calls to the method in lines 75 to 82 are identical, except for the variables used.&#160; The types of the variables bind to the type parameter at compile time.&#160; Within the method, variables of the parametric type are only be able to be used as if they were of type <code>object</code>.</p>
+
+<p>The other thing to note in the Swap method is the use of the <code>ref</code> keyword in declaring the parameters, and passing the variables to them.&#160; Without the <code>ref</code> keyword, variables of value types would be passed in as a copy, so that, even though the values of the variable are swapped inside the method, the values on the outside would stay the same.&#160; The ref keyword specifies that a reference to the variable is passed instead, so that a change to the parameter inside the method, actually changes the storage location of the variable outside the method.</p>
+
+<p>The last part of the exercise is to find the maximum and minimum of a list of numbers.&#160; There’s nothing really special in my implementation, except for the use of the <code>foreach</code> statement.&#160; That’s a construct I’ve enjoyed using in VB, and have always missed when I’ve been writing in C.&#160; It’s basically a shortcut to enumerating the items in a collection, without having to worry about dealing with indexes or enumerators.</p>
+
+<p>The only other thing of note in this code is that the methods are all declared static.&#160; That’s required to enable me to call the methods without instantiating the <code>MainClass</code> class as an object.</p>
+
+<p>So that’s it for this post.&#160; Next time I’ll look at exercise 3.</p>  
