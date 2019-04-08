@@ -9,4 +9,78 @@ modified_time: '2010-06-19T06:58:02.584+10:00'
 thumbnail: http://lh3.ggpht.com/_8osJtRBSdMg/TBvdfDUvKvI/AAAAAAAAAQ8/GihvbfBs6_8/s72-c/image%5B10%5D.png?imgmax=800
 ---
 
-<p>C# is a strongly-typed object-oriented language.&#160; Many of the types will appear familiar, at first glance, to those who know C or C++, and most C expressions will behave similarly in C#, but the C# type-system is fundamentally different. </p>  <p>In my previous post I introduced C#’s integral types.&#160; In this post I’ll look at C#’s type system.</p> <a name='more'></a>  <p>All C# types derive from the <a href="http://msdn.microsoft.com/en-au/library/zcx1eb1e.aspx">Common Type System</a> (CTS) provided by the .NET framework, and are inherited from the <strong>System.Object</strong> (keyword <code>object</code>) class.&#160; I’ll look into the object class in more detail later, but it means that all variables have some basic methods and properties.&#160; <a title="Types (C# Programming Guide)" href="http://msdn.microsoft.com/en-au/library/ms173104.aspx" target="_blank"><img style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; margin-left: 0px; border-left-width: 0px; margin-right: 0px" title="Value Types and Reference Types in the CTS" border="0" alt="Value Types and Reference Types in the CTS" align="right" src="http://lh3.ggpht.com/_8osJtRBSdMg/TBvdfDUvKvI/AAAAAAAAAQ8/GihvbfBs6_8/image%5B10%5D.png?imgmax=800" width="293" height="239" /></a>The diagram shows the inheritance hierarchy of types in the CTS. </p>  <p>C# has two categories of types: <strong><em>value types</em></strong> and <strong><em>reference types</em></strong>.&#160; Variables of value types directly contain their data, whereas variable of reference types store a reference to a memory location containing an object.&#160; More details on the differences in a later post.</p>  <p>All value types are either struct types or enumeration types.&#160; The types we would normally think of as base types in C or C++ are actually structs, and the keywords used to identify them are aliases for types in the .NET framework. </p>  <p>The basic value types in C#, known as <strong><em>simple types</em></strong>, are:</p>  <div class="scrollable">   <table class="basictable"><thead>       <tr>         <td colspan="2">Type category</td>          <td>Reserved            <br />word </td>          <td>Aliased            <br />type</td>          <td>Literal            <br />suffix</td>          <td>Range of values</td>       </tr>     </thead><tbody>       <tr>         <td rowspan="8">           <p align="center">Integral              <br />Types</p>         </td>          <td rowspan="4">           <p align="center">Signed</p>         </td>          <td><code>sbyte</code></td>          <td>System.SByte</td>          <td>&#160;</td>          <td>-128…127</td>       </tr>        <tr>         <td><code>short</code></td>          <td>System.Int16</td>          <td>&#160;</td>          <td>-32,768…32,767</td>       </tr>        <tr>         <td><code>int</code></td>          <td>System.Int32</td>          <td>&#160;</td>          <td>-2,147,483,648…2,147,483,647</td>       </tr>        <tr>         <td><code>long</code></td>          <td>System.Int64</td>          <td>           <p align="center">L</p>         </td>          <td>-9,223,372,036,854,775,808…9,223,372,036,854,775,807</td>       </tr>        <tr>         <td rowspan="4">           <p align="center">Unsigned</p>         </td>          <td><code>byte</code></td>          <td>System.Byte</td>          <td>&#160;</td>          <td>0…255</td>       </tr>        <tr>         <td><code>ushort</code></td>          <td>System.UInt16</td>          <td>&#160;</td>          <td>0…65,535</td>       </tr>        <tr>         <td><code>uint</code></td>          <td>System.UInt32</td>          <td>           <p align="center">U</p>         </td>          <td>0…4,294,967,295</td>       </tr>        <tr>         <td><code>short</code></td>          <td>System.UInt64</td>          <td>           <p align="center">UL</p>         </td>          <td>0…18,446,744,073,709,551,615</td>       </tr>        <tr>         <td rowspan="2" colspan="2">           <p align="center">Floating point              <br />types</p>         </td>          <td><code>float</code></td>          <td>System.Single</td>          <td>           <p align="center">F</p>         </td>          <td>+/-1.5 x 10<sup>-45</sup> to 3.4 x 10<sup>38</sup>, 7-digit precision</td>       </tr>        <tr>         <td><code>double</code></td>          <td>System.Double</td>          <td>           <p align="center">D</p>         </td>          <td>+/-5.0 x 10<sup>-324</sup> to 1.7 x 10<sup>308</sup>, 15-digit precision</td>       </tr>        <tr>         <td rowspan="3" colspan="2">&#160;</td>          <td><code>decimal</code></td>          <td>System.Decimal</td>          <td>           <p align="center">M</p>         </td>          <td>+/-1.0 x 10<sup>-28</sup> to 7.9 x 10<sup>28</sup>, 28-digit precision</td>       </tr>        <tr>         <td><code>char</code></td>          <td>System.Char</td>          <td>&#160;</td>          <td>Any Unicode character (UTF-16)</td>       </tr>        <tr>         <td><code>bool</code></td>          <td>System.Boolean</td>          <td>&#160;</td>          <td><code>true</code> or <code>false</code></td>       </tr>     </tbody></table> </div>  <p>The keywords and type names in the table above can be used interchangeably, although as a matter of style it’s probably a good idea to keep to one or the other.</p>  <p>The suffices can be used to specify a numeric type when writing a literal number in the code.</p>  <p>That’s all I’ve got time for at the moment.&#160; I think I’ll get into the second exercise next time.&#160; See you then.</p>  
+<p>C# is a strongly-typed object-oriented language.&#160; Many of the types will
+appear familiar, at first glance, to those who know C or C++, and most C
+expressions will behave similarly in C#, but the C# type-system is fundamentally
+different. </p>  <p>In my previous post I introduced C#’s integral types.&#160;
+In this post I’ll look at C#’s type system.</p> <a name='more'></a>  <p>All C#
+types derive from the <a
+href="http://msdn.microsoft.com/en-au/library/zcx1eb1e.aspx">Common Type
+System</a> (CTS) provided by the .NET framework, and are inherited from the
+<strong>System.Object</strong> (keyword <code>object</code>) class.&#160; I’ll
+look into the object class in more detail later, but it means that all variables
+have some basic methods and properties.&#160; <a title="Types (C# Programming
+Guide)" href="http://msdn.microsoft.com/en-au/library/ms173104.aspx"
+target="_blank"><img style="border-right-width: 0px; display: inline;
+border-top-width: 0px; border-bottom-width: 0px; margin-left: 0px;
+border-left-width: 0px; margin-right: 0px" title="Value Types and Reference
+Types in the CTS" border="0" alt="Value Types and Reference Types in the CTS"
+align="right"
+src="http://lh3.ggpht.com/_8osJtRBSdMg/TBvdfDUvKvI/AAAAAAAAAQ8/GihvbfBs6_8/image%5B10%5D.png?imgmax=800"
+width="293" height="239" /></a>The diagram shows the inheritance hierarchy of
+types in the CTS. </p>  <p>C# has two categories of types: <strong><em>value
+types</em></strong> and <strong><em>reference types</em></strong>.&#160;
+Variables of value types directly contain their data, whereas variable of
+reference types store a reference to a memory location containing an
+object.&#160; More details on the differences in a later post.</p>  <p>All value
+types are either struct types or enumeration types.&#160; The types we would
+normally think of as base types in C or C++ are actually structs, and the
+keywords used to identify them are aliases for types in the .NET framework. </p>
+<p>The basic value types in C#, known as <strong><em>simple types</em></strong>,
+are:</p>  <div class="scrollable">   <table class="basictable"><thead>
+<tr>         <td colspan="2">Type category</td>          <td>Reserved
+<br />word </td>          <td>Aliased            <br />type</td>
+<td>Literal            <br />suffix</td>          <td>Range of values</td>
+</tr>     </thead><tbody>       <tr>         <td rowspan="8">           <p
+align="center">Integral              <br />Types</p>         </td>          <td
+rowspan="4">           <p align="center">Signed</p>         </td>
+<td><code>sbyte</code></td>          <td>System.SByte</td>
+<td>&#160;</td>          <td>-128…127</td>       </tr>        <tr>
+<td><code>short</code></td>          <td>System.Int16</td>
+<td>&#160;</td>          <td>-32,768…32,767</td>       </tr>        <tr>
+<td><code>int</code></td>          <td>System.Int32</td>
+<td>&#160;</td>          <td>-2,147,483,648…2,147,483,647</td>       </tr>
+<tr>         <td><code>long</code></td>          <td>System.Int64</td>
+<td>           <p align="center">L</p>         </td>
+<td>-9,223,372,036,854,775,808…9,223,372,036,854,775,807</td>       </tr>
+<tr>         <td rowspan="4">           <p align="center">Unsigned</p>
+</td>          <td><code>byte</code></td>          <td>System.Byte</td>
+<td>&#160;</td>          <td>0…255</td>       </tr>        <tr>
+<td><code>ushort</code></td>          <td>System.UInt16</td>
+<td>&#160;</td>          <td>0…65,535</td>       </tr>        <tr>
+<td><code>uint</code></td>          <td>System.UInt32</td>          <td>
+<p align="center">U</p>         </td>          <td>0…4,294,967,295</td>
+</tr>        <tr>         <td><code>short</code></td>
+<td>System.UInt64</td>          <td>           <p align="center">UL</p>
+</td>          <td>0…18,446,744,073,709,551,615</td>       </tr>        <tr>
+<td rowspan="2" colspan="2">           <p align="center">Floating point
+<br />types</p>         </td>          <td><code>float</code></td>
+<td>System.Single</td>          <td>           <p align="center">F</p>
+</td>          <td>+/-1.5 x 10<sup>-45</sup> to 3.4 x 10<sup>38</sup>, 7-digit
+precision</td>       </tr>        <tr>         <td><code>double</code></td>
+<td>System.Double</td>          <td>           <p align="center">D</p>
+</td>          <td>+/-5.0 x 10<sup>-324</sup> to 1.7 x 10<sup>308</sup>,
+15-digit precision</td>       </tr>        <tr>         <td rowspan="3"
+colspan="2">&#160;</td>          <td><code>decimal</code></td>
+<td>System.Decimal</td>          <td>           <p align="center">M</p>
+</td>          <td>+/-1.0 x 10<sup>-28</sup> to 7.9 x 10<sup>28</sup>, 28-digit
+precision</td>       </tr>        <tr>         <td><code>char</code></td>
+<td>System.Char</td>          <td>&#160;</td>          <td>Any Unicode character
+(UTF-16)</td>       </tr>        <tr>         <td><code>bool</code></td>
+<td>System.Boolean</td>          <td>&#160;</td>          <td><code>true</code>
+or <code>false</code></td>       </tr>     </tbody></table> </div>  <p>The
+keywords and type names in the table above can be used interchangeably, although
+as a matter of style it’s probably a good idea to keep to one or the other.</p>
+<p>The suffices can be used to specify a numeric type when writing a literal
+number in the code.</p>  <p>That’s all I’ve got time for at the moment.&#160; I
+think I’ll get into the second exercise next time.&#160; See you then.</p>  
