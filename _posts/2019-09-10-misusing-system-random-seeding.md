@@ -1,46 +1,11 @@
 ---
-title: Misusing System.Random - Arguments and Seeds
+title: Misusing System.Random
+subtitle: Incorrect Seeding
 category: Coding
 ---
-This is the second post in [a series]({% post_url
-2019-09-03-misusing-system-random %}) on common ways that `System.Random` is
-misused. The series is based on my experience reviewing code test submissions
-from job candidates.
+{% include misusing-system-random-posts.md %}
 
-## Incorrect arguments for `.Next(...)`
-
-The most basic error in using `System.Random` is to get the parameters for the
-`Next` method wrong. Part of our coding tests involves generating a random key
-value from `key0` to `key9`. Five of the ten submissions reviewed used the
-following incorrect method call to get that random digit:
-
-```csharp
-rnd.Next(0, 9);
-```
-
-This call will return a number from 0 to 8, inclusive. That `9` in the method
-call is the *exclusive* upper bound of the range for random number generator.
-This is confusing if you just look at the parameter names (`maxValue` in this case), but is clear in Microsoft's
-[documentation](https://docs.microsoft.com/en-us/dotnet/api/system.random.next?view=netcore-2.2).
-
-The `Random.Next` method has three overloads:
-
-```csharp
-int Next()
-int Next(int maxValue)
-int Next(int minValue, int maxValue)
-```
-
-The first two are equivalent to `Next(0, Int32.MaxValue)`, and `Next(0,
-maxValue)`, respectively. The docs state that `minValue` is the "*inclusive* lower
-bound" and `maxValue` is the "*exclusive* upper bound", so the numbers returned
-will satisfy the relation: `minValue <= value < maxValue`.
-
-In the case of generating our random keys, the correct usage is then
-`rnd.Next(10)` or `rnd.Next(0, 10)`. As mentioned above, less than half our
-submissions got this right.
-
-## Seeding
+## {{ page.subtitle }}
 
 Another error I saw in our coding test submissions was that of incorrectly
 seeding the random number generator. Before I show you the coding issues I saw
@@ -132,12 +97,12 @@ public Random(int seed)
 
 So, when you need a single random number generator then using the parameterless
 constructor is most likely the right way to go. However, there is another
-problem in the multi-threaded code above, and that is one of timing. 
+problem in the multi-threaded code above, and that is one of timing.
 
 Using a time-based seed source leads to the same seed being used multiple times
 if the source is sampled more frequently than its temporal resolution.
 `DateTime.Now.Millisecond` has a resolution of 1ms, but
-`Environment.TickCount`'s resolution is only around 10-16ms. 
+`Environment.TickCount`'s resolution is only around 10-16ms.
 
 When I tested the above code I consistently got results with 2 or 3 groups of
 threads producing the same number sequence. Switching to `Environment.TickCount`
@@ -151,7 +116,7 @@ One obvious solution to the above timing problem is to delay instantiating the
 different key. This is a rather hacky solution, though.
 
 One might also be tempted to use a single instance for the threads to share.
-However, `System.Random` is not threead-safe, but that is a topic for another
+However, `System.Random` is not thread-safe, but that is a topic for another
 post.
 
 A better solution is to use one instance to seed the rest. You create a
@@ -172,3 +137,6 @@ for (var i = 0; i < 10; i++)
     }).Start(rootRnd.Next());
 }
 ```
+
+The next couple of posts will look at issues around the lifetime of
+`System.Random` instances and multi-threading.

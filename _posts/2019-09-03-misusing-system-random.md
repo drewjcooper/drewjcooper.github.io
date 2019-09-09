@@ -53,9 +53,3 @@ In this blog post series I'm going to dive into each of these wrong ways of
 using `System.Random`, explain why they're wrong, and show the correct usage.
 I'll finish up with thoughts on abstracting random number generation to enable
 thread-safety, dependency injection and unit testing.
-
-* Incorrect arguments and seeding
-* Singleton instance for multiple threads
-* Instance per invocation
-* Thread-safe randomness
-* Deterministic unit tests
