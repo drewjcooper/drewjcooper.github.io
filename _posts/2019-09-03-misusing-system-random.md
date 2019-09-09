@@ -2,6 +2,8 @@
 title: Misusing System.Random
 category: Coding
 ---
+{% include misusing-system-random-posts.md %}
+
 We've been interviewing for a new position at work recently, and we give all our
 candidates a coding test to do, usually between the first and second interview.
 The test involves design around caching of a key/value store in a multi-threaded
