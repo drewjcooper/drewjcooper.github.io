@@ -1,10 +1,11 @@
 ---
 title: Misusing System.Random
+subtitle: Incorrect Arguments for `.Next(...)`
 category: Coding
 ---
 {% include misusing-system-random-posts.md %}
 
-## Incorrect Arguments for `.Next(...)`
+## {{ page.subtitle }}
 
 The most basic error in using `System.Random` is to get the parameters for the
 `Next` method wrong. Part of our coding tests involves generating a random key
