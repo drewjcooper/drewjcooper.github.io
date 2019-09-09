@@ -17,7 +17,7 @@ multi-threading. I don't know if it says more about the candidates, or the
 design of `System.Random`, but I thought I'd write a few posts to highlight the
 problems and show the right way (or ways) to do things.
 
-## How do I misuse thee? Let me count the ways
+## How can I misuse thee? Let me count the ways
 
 Here is a list of the misuse I've seen, and the number of interview candidates
 of the 9 I've reviewed who misused `System.Random` in their code in this way.

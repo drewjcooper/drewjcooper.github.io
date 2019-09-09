@@ -3,5 +3,5 @@ my experience reviewing code test submissions from job candidates.
 
 * [Misusing `System.Random`]({% post_url
 2019-09-03-misusing-system-random %})
-* [Incorrect Arguments to `.Next(...)`]({% post_url
+* [Incorrect Arguments for `.Next(...)`]({% post_url
 2019-09-09-misusing-system-random-arguments %})

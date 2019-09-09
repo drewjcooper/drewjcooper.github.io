@@ -1,10 +1,10 @@
 ---
-title: Misusing System.Random - Arguments
+title: Misusing System.Random
 category: Coding
 ---
 {% include misusing-system-random-posts.md %}
 
-## The Problem
+## Incorrect Arguments for `.Next(...)`
 
 The most basic error in using `System.Random` is to get the parameters for the
 `Next` method wrong. Part of our coding tests involves generating a random key
@@ -15,7 +15,7 @@ following incorrect method call to get that random digit:
 rnd.Next(0, 9);
 ```
 
-## Why is this wrong?
+## What's the Problem?
 
 You may have heard that there are 2 hard problems in Computer Science: naming
 things, cache invalidation, and off-by-one errors. This is one or the latter.
@@ -41,7 +41,7 @@ will satisfy the relation: `minValue <= value < maxValue`.
 
 ## The Solution
 
-When using `.Next` with range arguments you need to remeber that the `maxValue`
+When using `.Next` with range arguments you need to remember that the `maxValue`
 parameter is the *exclusive* upper bound, so it needs to be one more than the
 actual maximum value to want to produce.
 
