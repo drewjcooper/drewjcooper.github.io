@@ -8,8 +8,8 @@ We've been interviewing for a new position at work recently, and we give all our
 candidates a coding test to do, usually between the first and second interview.
 The test involves design around caching of a key/value store in a multi-threaded
 system. Part of the test requires generating a random set of keys for exercising
-the cache. I've reviewed submissions from nine candidates so far and, to my
-surprise, not a single one used `System.Random` correctly.
+the cache. I've reviewed submissions from {{ stats.submissions }} candidates so
+far and, to my surprise, not a single one used `System.Random` correctly.
 
 I was amazed at how little candidates for a mid to senior-level software
 development position knew about generating random numbers, much less
@@ -20,14 +20,15 @@ problems and show the right way (or ways) to do things.
 ## How can I misuse thee? Let me count the ways
 
 Here is a list of the misuse I've seen, and the number of interview candidates
-of the 9 I've reviewed who misused `System.Random` in their code in this way.
+of the {{ stats.submissions }} I've reviewed who misused
+`System.Random` in their code in this way.
 
 Misuse                               | Candidates
 -------------------------------------|-------
-Incorrect arguments for `.Next(...)` | 5
-Incorrect seeding                    | 4
-Singleton for multiple threads       | 6
-Instance per invocation              | 2
+Incorrect arguments for `.Next(...)` | {{ arguments-bad }} ({{ arguments-bad-pc  }}%)
+Incorrect seeding                    | {{ seed-incorrect }} ({{ seed-incorrect-pc}}%)
+Singleton for multiple threads       | {{ instance-singleton }} ({{ instance-singleton-pc }}%)
+Instance per invocation              | {{ instance-per-invocation }} ({{ instance-per-invocation-pc }}%)
 
 The following snippet shows examples of all of these misuses of `System.Random`
 in the context of generating random numbers from 0-9, inclusive.

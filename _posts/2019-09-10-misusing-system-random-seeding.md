@@ -47,7 +47,7 @@ dice rolling utility, and `System.Random` will generate these for me, but I need
 a "random" seed so that I don't get the same sequence of dice rolls for each run
 of the application. Where can I get that "random" seed?
 
-One candidate used a constant seed, like this:
+{{ numbers[seed-constant] | capitalize }} candidates used a constant seed, like this:
 
 ```csharp
 var random = new Random(0);
@@ -56,7 +56,7 @@ var random = new Random(0);
 Obviously that's not going to work. Well it is, if you're happy getting the same
 sequence of random numbers each time you run the program.
 
-The only other candidate to use an explicit seed did it this way:
+The {{ numbers[seed-poor] }} other candidates to use an explicit seed did it this way:
 
 ```csharp
 for (var i = 0; i < 10; i++)
@@ -107,7 +107,8 @@ if the source is sampled more frequently than its temporal resolution.
 When I tested the above code I consistently got results with 2 or 3 groups of
 threads producing the same number sequence. Switching to `Environment.TickCount`
 as the seed source led, more often than not, to all the threads producing the
-same sequence of numbers.
+same sequence of numbers. {{ numbers[seed-timing] | capitalize }}
+{{ of-submissions }} got this wrong.
 
 ### The Solution
 
