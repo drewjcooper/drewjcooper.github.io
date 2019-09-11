@@ -33,5 +33,15 @@ my experience reviewing code test submissions from job candidates.
     where: "title", "Misusing System.Random" |
     reverse -%}
 {%- for post in series_posts %}
-* [{{post.subtitle | default: post.title }}]({{ post.url }})
+  {% assign label = post.subtitle | default: post.title %}
+  {%- if post.subtitle == page.subtitle -%}
+* {{ label }}
+  {%- else -%}
+* [{{ label }}]({{ post.url }})
+  {%- endif -%}
 {%- endfor -%}
+
+{% if page.subtitle %}
+
+## {{ page.subtitle }}
+{% endif %}
