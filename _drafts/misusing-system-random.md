@@ -1,10 +1,11 @@
 ---
 title: Misusing System.Random
+subtitle: Instance per Invocation
 category: Coding
 ---
 {% include misusing-system-random-posts.md %}
 
-# Instance per invocation
+## {{ page.subtitle }}
 
 Another basic error in using `System.Random` is to use a new instance of the
 class for each call to `.Next`. {{ stats.instance.perInvocation }} of the
@@ -24,7 +25,9 @@ generated from a kind of algorithmic state machine. The constructor does a bunch
 of work to set up the state machine, and then each call to `Next()` gets a value
 and increments the state of the machine.  
 
-So we have two basic problems.  One is that constructing a new instance of
+## Unnecessary Expense
+
+So we have two basic problems. One is that constructing a new instance of
 `System.Random` is relatively expensive. The following code is a basic benchmark
 comparing the cost of generating a million random numbers from a single
 instance vs. creating a new instance for each call to `Next()`.
@@ -54,26 +57,27 @@ var instancePerNextDuration = sw.ElapsedMilliseconds;
 Console.WriteLine(instancePerNextDuration / singleInstanceDuration);
 ```
 
-On my machine, running this code in LINQPad, the code consistently outputs a
-number between 20 and 30. That is, it's 20-30 times more expensive to create a
-new instance of `System.Random` for each call to `Next()`, than to use a single
-instance for all calls.
+On my machine, running this code in [LINQPad](https://linqpad.net), the code
+consistently outputs a number between 20 and 30. That is, it's 20-30 times more
+expensive to create a new instance of `System.Random` for each call to `Next()`,
+than to use a single instance for all calls. And that's not even considering the
+GC pressure caused by all those extra objects.
+
+## Pseudo-Non-Random Numbers
 
 But that's not the only problem. Creating a new instance of `System.Random`
 creates a new state machine for generating pseudo-random numbers. Initialising a
 new state machine for each number generated compromises the randomness of the
-values. This is exacerbated by the way the state machine is initialised, but
-we'll talk more about that in the next post about seeding.
+values.
 
-For now, the takeaway is, don't create an instance of `System.Random` for each
-call to `Next()`. Create a single instance once, then use it to generate all the
-random numbers you need.
+And from our previous discussion of the way that seeding works, it
+should be clear that, if you're requesting multiple random numbers in a short
+period of time, say rolling 5 dice for a game of Yahtzee, then there's a good
+change that you'll end up with a run of the same number.
 
-# Seeding
+## Conclusion
 
-
-# Not thread safe
-
-
-# The right way
-# Testing non-deterministic code deterministically
+So, don't create an instance of `System.Random` for each call to `Next()`.
+Create a single instance once, then use it to generate all the random numbers
+you need. Unless you're generating random numbers in multiple threads. But
+that's the topic for next time.
