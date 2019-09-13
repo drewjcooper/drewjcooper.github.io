@@ -97,6 +97,8 @@ So, when you need a single random number generator then using the parameterless
 constructor is most likely the right way to go. However, there is another
 problem in the multi-threaded code above, and that is one of timing.
 
+> But see the update in the next post regarding .Net Core
+
 Using a time-based seed source leads to the same seed being used multiple times
 if the source is sampled more frequently than its temporal resolution.
 `DateTime.Now.Millisecond` has a resolution of 1ms, but
