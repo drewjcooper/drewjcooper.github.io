@@ -1,16 +1,16 @@
-submissions: 27
+submissions: 28
 
 instance:
   perInvocation: +++++
-  perThread: +++++
+  perThread: ++++++
   singleton: +++++++++++++++++
 
 arguments:
   good: +++++++++++
-  bad: ++++++++++++++++
+  bad: +++++++++++++++++
 
 seed:
   constant: ++
   poor: ++
-  timing: +++++
+  timing: ++++++
   good: ++++++++++++++++++
