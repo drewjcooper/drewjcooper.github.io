@@ -6,8 +6,8 @@ category: Coding
 {% include misusing-system-random-posts.md %}
 
 Another basic error in using `System.Random` is to use a new instance of the
-class for each call to `.Next`. {{ stats.instance.perInvocation }} of the
-{{ stats.submissions }} submissions did something equivalent to:
+class for each call to `.Next`. {{numbers[instance-per-invocation] | capitalize}}
+{{of-submissions}} did something equivalent to:
 
 ```csharp
 var value = new Random().Next(0, 10);
