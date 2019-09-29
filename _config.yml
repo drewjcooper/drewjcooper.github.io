@@ -26,6 +26,8 @@ github_username:  drewjcooper
 # Build settings
 markdown: kramdown
 remote_theme: "mmistakes/minimal-mistakes@4.16.6"
+minimal_mistakes_skin: "dark"
+
 plugins:
   - jekyll-feed
   - jekyll-sitemap
