@@ -59,8 +59,8 @@ private int InternalSample()
 }
 ```
 
-_seedArray is an array of pseudo-random integers that is built from the seed
-value in the constructor. _inext and _inextp are initially set to 0 and 21,
+`_seedArray` is an array of pseudo-random integers that is built from the seed
+value in the constructor. `_inext` and `_inextp` are initially set to 0 and 21,
 respectively. The seed array is circular, as the indices wrap around to 1 when
 they reach the end.
 
