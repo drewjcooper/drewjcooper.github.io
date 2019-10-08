@@ -53,7 +53,7 @@ paginate_path: /page:num/
 author:
   name: "Andrew Cooper"
   avatar: "/assets/images/bio-photo.jpg"
-  bio: "I am an **amazing** person." # Note: Markdown is allowed
+  bio: "Christian, Husband, Dad, Programmer - what else is there?" # Note: Markdown is allowed
   location: "Somewhere"
   links:
     - label: "Twitter"
