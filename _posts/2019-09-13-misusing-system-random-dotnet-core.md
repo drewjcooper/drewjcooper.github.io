@@ -150,6 +150,6 @@ reasonable results.
 
 [core]: https://source.dot.net/#System.Private.CoreLib/shared/System/Random.cs
 [.Net]: https://referencesource.microsoft.com/#mscorlib/system/random.cs
-[code-repo]: https://github.com/drewjcooper/drewjcooper.github.io.code/tree/master/SystemRandomIsNotThreadSafe
+[code-repo]: https://github.com/drewjcooper/drewjcooper.github.io.code/tree/master/MultiInstanceSeeding
 [1]: {% post_url 2019-09-10-misusing-system-random-seeding %}
 [2]: {% post_url 2019-09-11-misusing-system-random-instance-per-invocation %}
