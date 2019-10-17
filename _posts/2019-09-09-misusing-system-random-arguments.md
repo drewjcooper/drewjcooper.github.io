@@ -1,6 +1,6 @@
 ---
-title: Misusing System.Random
-subtitle: Incorrect Arguments for `.Next(...)`
+title: Incorrect Arguments for `.Next(...)`
+series: Misusing System.Random
 category: Coding
 ---
 {% include misusing-system-random-posts.md %}

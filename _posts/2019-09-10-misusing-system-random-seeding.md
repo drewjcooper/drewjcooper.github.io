@@ -1,6 +1,6 @@
 ---
-title: Misusing System.Random
-subtitle: Incorrect Seeding
+series: Misusing System.Random
+title: Incorrect Seeding
 category: Coding
 ---
 {% include misusing-system-random-posts.md %}

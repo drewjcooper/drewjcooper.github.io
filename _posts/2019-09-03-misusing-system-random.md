@@ -1,5 +1,6 @@
 ---
 title: Misusing System.Random
+series: Misusing System.Random
 category: Coding
 ---
 {% include misusing-system-random-posts.md %}

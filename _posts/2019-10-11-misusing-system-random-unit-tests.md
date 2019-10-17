@@ -1,6 +1,6 @@
 ---
-title: Misusing System.Random
-subtitle: Unit Testing Randomness
+series: Misusing System.Random
+title: Unit Testing Randomness
 category: Coding
 ---
 {% include misusing-system-random-posts.md %}

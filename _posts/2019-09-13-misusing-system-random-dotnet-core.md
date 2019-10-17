@@ -1,6 +1,6 @@
 ---
-title: Misusing System.Random
-subtitle: Improvements in .Net Core
+series: Misusing System.Random
+title: Improvements in .Net Core
 category: coding
 ---
 {% include misusing-system-random-posts.md %}

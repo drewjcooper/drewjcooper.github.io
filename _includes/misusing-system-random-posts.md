@@ -30,20 +30,3 @@ of the {{numbers[stats.submissions]}} submissions
 {%- endcapture -%}
 This is a series on common ways that `System.Random` is misused, based on
 my experience reviewing code test submissions from job candidates.
-
-{%- assign series_posts = site.posts |
-    where: "title", "Misusing System.Random" |
-    reverse -%}
-{%- for post in series_posts %}
-  {% assign label = post.subtitle | default: post.title %}
-  {%- if post.subtitle == page.subtitle -%}
-* {{ label }}
-  {%- else -%}
-* [{{ label }}]({{ post.url }})
-  {%- endif -%}
-{%- endfor -%}
-
-{% if page.subtitle %}
-
-## {{ page.subtitle }}
-{% endif %}

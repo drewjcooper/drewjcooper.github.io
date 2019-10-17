@@ -1,7 +1,8 @@
 ---
-title: Misusing System.Random
-subtitle: Singleton for Multiple Threads
+series: Misusing System.Random
+title: Singleton for Multiple Threads
 category: Coding
+toc: true
 ---
 {% include misusing-system-random-posts.md %}
 

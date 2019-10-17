@@ -1,6 +1,6 @@
 ---
-title: Misusing System.Random
-subtitle: Instance per Invocation
+series: Misusing System.Random
+title: Instance per Invocation
 category: Coding
 ---
 {% include misusing-system-random-posts.md %}
