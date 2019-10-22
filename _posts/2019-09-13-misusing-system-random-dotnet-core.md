@@ -3,7 +3,7 @@ series: Misusing System.Random
 title: Improvements in .Net Core
 category: coding
 ---
-{% include misusing-system-random-posts.md %}
+{% include misusing-system-random-stats.md %}
 
 My discussion of `System.Random` pitfalls so far this series, and particularly
 the [post on seeding][1], has been based on the [reference source for .Net

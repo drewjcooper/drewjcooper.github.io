@@ -3,7 +3,7 @@ series: Misusing System.Random
 title: Unit Testing Randomness
 category: Coding
 ---
-{% include misusing-system-random-posts.md %}
+{% include misusing-system-random-stats.md %}
 
 The previous posts in this series detailed a number of ways that I had seen
 `System.Random` be misused in responses to a coding challenge we ask prospective

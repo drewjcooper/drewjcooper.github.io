@@ -3,7 +3,7 @@ series: Misusing System.Random
 title: Instance per Invocation
 category: Coding
 ---
-{% include misusing-system-random-posts.md %}
+{% include misusing-system-random-stats.md %}
 
 Another basic error in using `System.Random` is to use a new instance of the
 class for each call to `.Next`. {{numbers[instance-per-invocation] | capitalize}}

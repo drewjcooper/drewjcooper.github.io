@@ -1,3 +1,6 @@
+header: "This is a series on common ways that `System.Random` is misused, 
+  based on my experience reviewing code test submissions from job candidates."
+
 submissions: 28
 
 instance:

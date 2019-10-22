@@ -3,7 +3,7 @@ series: Misusing System.Random
 title: Incorrect Seeding
 category: Coding
 ---
-{% include misusing-system-random-posts.md %}
+{% include misusing-system-random-stats.md %}
 
 Another error I saw in our coding test submissions was that of incorrectly
 seeding the random number generator. Before I show you the coding issues I saw

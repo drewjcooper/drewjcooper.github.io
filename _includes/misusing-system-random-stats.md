@@ -28,5 +28,3 @@
 {%- capture of-submissions -%}
 of the {{numbers[stats.submissions]}} submissions
 {%- endcapture -%}
-This is a series on common ways that `System.Random` is misused, based on
-my experience reviewing code test submissions from job candidates.

@@ -50,6 +50,10 @@ layout: default
             {% endif %}
           </aside>
         {% endif %}
+        {% if page.series %}
+          {% assign series_slug = page.series | slugify %}
+          {{ site.data[series_slug].header | markdownify }}
+        {% endif %}
         {{ content }}
         {% if page.link %}<div><a href="{{ page.link }}" class="btn btn--primary">{{ site.data.ui-text[site.locale].ext_link_label | default: "Direct Link" }}</a></div>{% endif %}
       </section>
