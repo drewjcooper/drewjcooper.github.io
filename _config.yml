@@ -53,8 +53,12 @@ paginate_path: /page:num/
 author:
   name: "Andrew Cooper"
   avatar: "/assets/images/bio-photo.jpg"
-  bio: "Christian, Husband, Dad, Programmer - what else is there?" # Note: Markdown is allowed
-  location: "Somewhere"
+  bio: |
+    Christian, Husband, Dad, Programmer - what else is there?
+    
+    Documented here are my adventures in code that I had the presence of mind, and
+    the temporal resources, to set forth at the time.
+  location: "Sydney, Australia"
   links:
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
@@ -71,3 +75,4 @@ defaults:
     values:
       layout: single
       author_profile: true
+      toc_sticky: true
