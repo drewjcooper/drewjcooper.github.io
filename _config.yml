@@ -25,10 +25,14 @@ github_username:  drewjcooper
 
 # Build settings
 markdown: kramdown
-theme: minima
+remote_theme: "drewjcooper/minimal-mistakes@blog"
+minimal_mistakes_skin: "dark"
+
 plugins:
   - jekyll-feed
   - jekyll-sitemap
+  - jekyll-remote-theme
+  - jekyll-include-cache
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
@@ -43,10 +47,32 @@ plugins:
 #   - vendor/ruby/
 exclude: [README.md]
 
+paginate: 10 # amount of posts to show
+paginate_path: /page:num/
+
+author:
+  name: "Andrew Cooper"
+  avatar: "/assets/images/bio-photo.jpg"
+  bio: |
+    Christian, Husband, Dad, Programmer - what else is there?
+    
+    Documented here are my adventures in code that I had the presence of mind, and
+    the temporal resources, to set forth at the time.
+  location: "Sydney, Australia"
+  links:
+    - label: "Twitter"
+      icon: "fab fa-fw fa-twitter-square"
+      url: "https://twitter.com/drewjcooper"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/drewjcooper"
+
 defaults:
   -
     scope:
       path: ""
-      type: "posts"
+      type: posts
     values:
-      layout: "post"
+      layout: single
+      author_profile: true
+      toc_sticky: true

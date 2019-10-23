@@ -1,9 +1,10 @@
 ---
-title: Misusing System.Random
-subtitle: Singleton for Multiple Threads
+series: Misusing System.Random
+title: Singleton for Multiple Threads
 category: Coding
+toc: true
 ---
-{% include misusing-system-random-posts.md %}
+{% include misusing-system-random-stats.md %}
 
 The last error I've seen in using `System.Random` is to use a single instance of
 the class in an application that calls `.Next` in multiple threads.

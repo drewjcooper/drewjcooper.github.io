@@ -1,5 +1,4 @@
 ---
-layout: post
 title: Welcome to My New, New Home
 tags:
 - Blogging

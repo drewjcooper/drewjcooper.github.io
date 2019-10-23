@@ -1,8 +1,9 @@
 ---
 title: Misusing System.Random
+series: Misusing System.Random
 category: Coding
 ---
-{% include misusing-system-random-posts.md %}
+{% include misusing-system-random-stats.md %}
 
 We've been interviewing for a new position at work recently, and we give all our
 candidates a coding test to do, usually between the first and second interview.
