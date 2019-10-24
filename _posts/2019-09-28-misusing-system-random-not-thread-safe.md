@@ -2,7 +2,6 @@
 series: Misusing System.Random
 title: Singleton for Multiple Threads
 category: Coding
-toc: true
 ---
 {% include misusing-system-random-stats.md %}
 
