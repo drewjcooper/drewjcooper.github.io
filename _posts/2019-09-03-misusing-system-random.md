@@ -12,6 +12,7 @@ system. Part of the test requires generating a random set of keys for exercising
 the cache. I've reviewed submissions from {{numbers[stats.submissions]}}
 candidates so far and, to my surprise, not a single one used `System.Random`
 correctly.
+<!--more-->
 
 I was amazed at how little candidates for a mid to senior-level software
 development position knew about generating random numbers, much less

@@ -8,6 +8,7 @@ category: Coding
 The previous posts in this series detailed a number of ways that I had seen
 `System.Random` be misused in responses to a coding challenge we ask prospective
 employees to complete, and described ways to avoid these pitfalls.
+<!--more-->
 
 There is another issue to consider when using `System.Random`, and that is
 testability of code. This is not just a problem with `System.Random`, of course.
