@@ -8,6 +8,7 @@ category: coding
 My discussion of `System.Random` pitfalls so far this series, and particularly
 the [post on seeding][1], has been based on the [reference source for .Net
 Framework][.Net].
+<!--more-->
 
 I was looking at the the [source code for .Net Core 2.x][core], and noticed
 something very interesting. The parameterless constructor no longer uses

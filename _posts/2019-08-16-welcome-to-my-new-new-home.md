@@ -12,6 +12,7 @@ appropriately, "[Learning C# and
 .Net](https://learningcsharpnet.blogspot.com/)". That effort lasted a year
 before family and work commitments eliminated available bloggin time, and thus
 my blog languished while I continued to learn.
+<!--more-->
 
 When I returned to blogging, after having spent nearly 5 awesome years at
 Microsoft learning a tonne, I wanted to move on from the theme of my first blog.

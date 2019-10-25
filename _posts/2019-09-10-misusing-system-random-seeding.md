@@ -8,6 +8,7 @@ category: Coding
 Another error I saw in our coding test submissions was that of incorrectly
 seeding the random number generator. Before I show you the coding issues I saw
 in the test submissions, we need to understand what seeding actually does.
+<!--more-->
 
 ### Deterministic Randomness
 
