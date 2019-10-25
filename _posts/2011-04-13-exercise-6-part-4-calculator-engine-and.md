@@ -1,0 +1,406 @@
+---
+title: Exercise 6 (part 4) – The Calculator Engine and Anonymous Methods
+date: '2011-04-13T02:01:00.001+10:00'
+tags:
+- C# Specifics
+- C# Exercise
+- ".NET Specifics"
+modified_time: '2011-04-13T02:01:28.397+10:00'
+---
+In this post I'll complete the RPN Calculator engine we've been looking
+at.  This will complete the DLL I've been working on, and next time I'll
+run through the code for a Console-based front-end.
+
+[]{#more}
+
+Let's get straight into the code.
+
+::: {.csharpcode}
+       1:  using System;
+
+       2:  using System.Collections.Generic;
+
+       3:  using System.Linq;
+
+       4:   
+
+       5:  namespace LearningCSharp
+
+       6:  {
+
+       7:      public partial class RPNCalculatorEngine
+
+       8:      {
+
+       9:          private Stack<double> _calculationStack;
+
+      10:          private InputLine _input;
+
+      11:          private List<Operation> _operations;
+
+      12:          static private int _baseOperationCount = 30;
+
+      13:   
+:::
+
+The `RPNCalculatorEngine` class defines four **private fields**: one for
+the operand stack, one for the input line, one for the list of
+operations supported by the engine, and one for the number of operations
+supported by the engine.  The `_calculationStack` and `_operations`
+fields are declared as generic types from the
+`System.Collections.Generic` **namespace**.  Note that the `_operations`
+field is a `List` of `Operation`.  We're actually going to use it to
+store objects of `Operation`, `BinaryOperation`, `UnaryOperation` and
+`ConstantOperation` types, but that's okay because the last three are
+derived from Operation as we saw in the last post.
+
+Next, let's have a look at the constructor:
+
+::: {.csharpcode}
+      14:          public RPNCalculatorEngine()
+
+      15:          {
+
+      16:              _calculationStack = new Stack<double>();
+
+      17:              _input = new InputLine();
+
+      18:              _input.Clear();
+
+      19:              _operations = new List<Operation>(_baseOperationCount);
+
+      20:              _operations.Add(new Operation("Zero", "0", "0", '0'));
+
+      21:              _operations.Add(new Operation("One", "1", "1", '1'));
+
+      22:              _operations.Add(new Operation("Two", "2", "2", '2'));
+
+      23:              _operations.Add(new Operation("Three", "3", "3", '3'));
+
+      24:              _operations.Add(new Operation("Four", "4", "4", '4'));
+
+      25:              _operations.Add(new Operation("Five", "5", "5", '5'));
+
+      26:              _operations.Add(new Operation("Six", "6", "6", '6'));
+
+      27:              _operations.Add(new Operation("Seven", "7", "7", '7'));
+
+      28:              _operations.Add(new Operation("Eight", "8", "8", '8'));
+
+      29:              _operations.Add(new Operation("Nine", "9", "9", '9'));
+
+      30:              _operations.Add(new Operation("Decimal", ".", ".", '.'));
+
+      31:              _operations.Add(new Operation("Exponent", "Exp", "E", 'E'));
+
+      32:              _operations.Add(new Operation("Back", "Bck", "Back", '\b'));
+
+      33:              _operations.Add(new UnaryOperation("Enter", "Cpy", "Enter", '\r', Copy));
+
+      34:              _operations.Add(new UnaryOperation("Negate", "Neg", "+/-", '_', x => -x));
+
+      35:              _operations.Add(new UnaryOperation("Inverse", "Inv", "1/x", '\\', x => 1 / x));
+
+      36:              _operations.Add(new ConstantOperation("PI", "PI", "\x03c0", 'p', Math.PI));
+
+      37:              _operations.Add(new ConstantOperation("e", "e", "e", 'e', Math.E));
+
+      38:              _operations.Add(new BinaryOperation("Add", "Add", "+", '+', (y, x) => x + y));
+
+      39:              _operations.Add(new BinaryOperation("Subtract", "Sub", "-", '-', (y, x) => x - y));
+
+      40:              _operations.Add(new BinaryOperation("Multiply", "Mul", "x", '*', (y, x) => x * y));
+
+      41:              _operations.Add(new BinaryOperation("Divide", "Div", "\xf7", '/', (y, x) => x / y));
+
+      42:              _operations.Add(new BinaryOperation("Modulus", "Mod", "mod", '%', (y, x) => x % y));
+
+      43:              _operations.Add(new UnaryOperation("Factorial", "Fac", "!", '!', Factorial));
+
+      44:              _operations.Add(new UnaryOperation("Cosine", "Cos", "cos", 'c', Math.Cos));
+
+      45:              _operations.Add(new UnaryOperation("Sine", "Sin", "sin", 's', Math.Sin));
+
+      46:              _operations.Add(new UnaryOperation("Tangent", "Tan", "tan", 't', Math.Tan));
+
+      47:              _operations.Add(new UnaryOperation("Square", "x\xb2", "x\xb2", 'S', x => Math.Pow(x, 2)));
+
+      48:              _operations.Add(new UnaryOperation("Cube", "x\xb3", "x\xb3", 'C', x => Math.Pow(x, 3)));
+
+      49:              _operations.Add(new UnaryOperation("SquareRoot", "RtX", "\x221a", 'R', Math.Sqrt));
+
+      50:          }
+
+      51:   
+:::
+
+So that all looks a little over the top, and looking back on it now I
+can think of a number of better ways of doing this, but basically all
+we're doing is initialising the operand stack and the input line, and
+populating the list of built-in operations.  I say "built-in", because,
+although I haven't written a method to enable it, with this design it's
+possible for the calculator front-end that uses this DLL to extend the
+list of operations the calculator can perform.
+
+There are two interesting points here.  One is the mixing of operation
+types in the one list that I mentioned before.  It's just classic OO
+polymorphism, but it's interesting to see it in action.
+
+The more important thing to notice, from the point of view of learning
+C#, are the way that the functions are passed to the operation
+constructors.  Take the **Add** operation, for example.  The function
+passed to the constructor is `(x, y) => x + y`.  At first that looks
+more than a little strange, but it's called a **lambda expression**, and
+it's basically just a notation for defining anonymous, or inline,
+functions.  Basically it defines a function that takes two operands and
+returns their sum.  In this context at least, we don't need to declare
+the types of the operands, because the compiler can infer them from the
+context in which we're using the **lambda**.  The lambda expression is
+mapped to the **delegate** type we used to declare the constructor
+parameter (`BinaryO p`), and so the operands are taken to be two
+doubles, and the result their sum.
+
+We also see a different application of the **delegate** parameter here. 
+The trig operations (sin, cos and tan) are not defined in terms of
+**lambda**s.  We don't need an anonymous function because we already
+have perfectly suitable methods defined in the `Math` class.  Instead of
+a **lambda** we just pass in a reference to the appropriate method. As
+long as the signature of the method matches the signature of the
+**delegate** type, we're fine.
+
+One other point of interest is the use of Unicode character codes in
+some of the strings.  In C#, all `string`s and `char`s, are defined in
+terms of Unicode characters.  Any Unicode character can be used in a
+`char` or `string` literal by meas of the `\x…` escape code.
+
+::: {.csharpcode}
+      52:          public string InputString
+
+      53:          {
+
+      54:              get
+
+      55:              {
+
+      56:                  return this._input.ToString();
+
+      57:              }
+
+      58:          }
+
+      59:   
+:::
+
+Here we have a read-only property to get a string representation of the
+current input line.  Note that the property has a getter, but not
+setter.
+
+::: {.csharpcode}
+      60:          public void PressKey(int keyIndex)
+
+      61:          {
+
+      62:              if (keyIndex < _operations.Count)
+
+      63:              {
+
+      64:                  Operation operation = _operations[keyIndex];
+
+      65:                  if (_input.AddChar(operation.ShortCut)) return;
+
+      66:                  if (operation.ShortCut == '\b' && _calculationStack.Count > 0)
+
+      67:                  {
+
+      68:                      _calculationStack.Pop();
+
+      69:                      return;
+
+      70:                  }
+
+      71:                  if (operation.HasFunction)
+
+      72:                  {
+
+      73:                      if (_input.IsActive)
+
+      74:                      {
+
+      75:                          _calculationStack.Push(_input.ToDouble());
+
+      76:                          _input.Clear();
+
+      77:                          if (operation.Name == "Enter") return;
+
+      78:                      }
+
+      79:                      operation.Execute(_calculationStack);
+
+      80:                  }
+
+      81:              }
+
+      82:          }
+
+      83:          
+:::
+
+The `PressKey` method is basically the core of the engine.  It is the
+main method called by the calculator UI to pass user key strokes to the
+engine.  The interface is defined in terms of a number of keys, each of
+which map to one of the operations in the calculator engine.  The
+parameter passed to this method is the numeric index of the key that was
+pressed (operation to be  executed).
+
+The `keyIndex` is check to see if it's in the correct range, and then
+operation associated with the key is retrieved.  The character
+associated with the operation is passed to the `inputLine`, and if it
+was a valid input character (`_input.AddChar()` returns true) we finish
+processing the keystroke.  If the key pressed was the back-space key
+then we just pop the top operand from the stack and return.
+
+Otherwise we check if the operation has a function defined.  If so, we
+check if the `inputLine` is active and push it to the stack if it is. 
+We then execute the operation.  That's all there is to it.  As we saw
+last post, the operation pops its operands from the stack and returns
+its result to the stack.
+
+::: {.csharpcode}
+      84:          public double? this[int index]
+
+      85:          {
+
+      86:              get
+
+      87:              {
+
+      88:                  if (index < _calculationStack.Count)
+
+      89:                      return _calculationStack.ElementAt<double>(index);
+
+      90:                  else
+
+      91:                      return null;
+
+      92:              }
+
+      93:          }
+
+      94:   
+:::
+
+Here are a couple of new things we haven't seen before.  The above code
+is an **indexer**.  We'll see how the indexer is called next post when
+we look at the calculator UI.  For now it's sufficient to say that it
+behaves a little like a property, but with an index parameter.  This
+indexer only has a getter, so it's read only, and it returns the value
+of the appropriate position on the operand stack, or null if the index
+is out of range.
+
+In order to be able to return null, the return type is declared
+as`double?`.  This is the same as Nullable\<double\>, and all value
+types in C# have a similar nullable variant.  A nullable type has two
+important properties -- `HasValue` and `Value`.  The former returns
+**true** if a value is assigned, or false if the variable is null.  The
+latter returns the vaue that has been assigned.
+
+::: {.csharpcode}
+      95:          public Operation GetOperation(int index)
+
+      96:          {
+
+      97:              return index < _operations.Count ? _operations[index] : null;
+
+      98:          }
+
+      99:   
+:::
+
+`GetOperation` just returns a reference to the operation with the
+specified index in the operations list.  It probably would have made
+sense to implement this as an indexer, where the index parameter was the
+character code associated with the operation.  I can't remember now why
+I didn't end up doing it that way.
+
+::: {.csharpcode}
+     100:          private double Copy(double operand)
+
+     101:          {
+
+     102:              _calculationStack.Push(operand);
+
+     103:              return operand;
+
+     104:          }
+
+     105:   
+:::
+
+The last two members of this class are a couple of methods to implement
+operation functions that we can't handle just with a **lambda**.  
+`Copy` pushes a copy of it's parameter onto the stack, and then returns
+then same value.  Recall that the `Operation` class pushes this return
+value onto the stack.  The effect of this is that the top entry on the
+stack is copied.
+
+::: {.csharpcode}
+     106:          private double Factorial(double operand)
+
+     107:          {
+
+     108:              if (operand >= 0d && Math.Floor(operand) == operand)    // Check that operand is a positive integer
+
+     109:              {
+
+     110:                  double result = 1;
+
+     111:                  while (operand > 1)
+
+     112:                  {
+
+     113:                      result *= operand--;
+
+     114:                      if (double.IsInfinity(result))
+
+     115:                      {
+
+     116:                          throw new OverflowException("Fac: Result too large");
+
+     117:                      }
+
+     118:                  }
+
+     119:                  return result;
+
+     120:              }
+
+     121:              else
+
+     122:              {
+
+     123:                  _calculationStack.Push(operand);    // Return the operand to the stack
+
+     124:                  throw new ArgumentOutOfRangeException("Fac: Must be positive integer");
+
+     125:              }
+
+     126:          }
+
+     127:      }
+
+     128:  }
+:::
+
+This last method implements a basic factorial calculation.  If the
+operand is negative, the factorial operation is undefined, so we just
+push the operand back onto the stack and throw and **exception**.
+
+We've seen in a number of places in this post, the use of members of the
+`Math` class.   This is a class of static methods implementing a fairly
+wide range of standard mathematical operations.
+
+So that ties up the RPN Calculator Engine DLL.  Next time we'll have a
+look at a simple console-based user interface for the calculator, and
+look at some pretty cool capabilities of the `Console` class. 
+
+See you then.
