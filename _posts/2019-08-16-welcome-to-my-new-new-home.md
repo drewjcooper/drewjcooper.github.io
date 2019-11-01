@@ -8,17 +8,17 @@ So, last year I started blogging again after a seven-year hiatus. I had started
 my first blog when I was first learning C# and .Net as a means of documenting my
 learning experience for the benefit of myself and others. I'd started it on
 Blogger, which was one of the bigger platforms at the time, and named it,
-appropriately, "[Learning C# and
-.Net](https://learningcsharpnet.blogspot.com/)". That effort lasted a year
-before family and work commitments eliminated available bloggin time, and thus
-my blog languished while I continued to learn.
+appropriately, "[Learning C# and .Net]({% post_url 2010-06-07-hello-world %})".
+That effort lasted a year before family and work commitments eliminated
+available blogging time, and thus my blog languished while I continued to learn.
+<!--more-->
 
 When I returned to blogging, after having spent nearly 5 awesome years at
 Microsoft learning a tonne, I wanted to move on from the theme of my first blog.
 Not that I've ever stopped learning - I'll do that the day I die - but I wanted
 to cover slightly more advanced stuff than the theme would suggest. So I started
 a new blog on Blogger, because that was what I knew, and called it "[Drew's
-Adventures in Code](https://adventures-in-code.blogspot.com/)". It was only a
+Adventures in Code]({% post_url 2018-06-15-welcome-to-my-new-home %})". It was only a
 month or two later that I discovered [Eric Lippert's wonderful blog of nearly
 the same name](https://ericlippert.com/). Oh well.
 

@@ -6,7 +6,7 @@ tags:
 modified_time: '2010-06-19T11:15:54.268+10:00'
 ---
 In [15 Exercises for Learning a new Programming
-Language](http://www.jobsnake.com/seek/articles/index.cgi?openarticle&8533),
+Language](https://www.articlecity.com/articles/computers_and_internet/article_2686.shtml),
 Prashant Mhatre kicks off with:
 
 > First of all, get familiar with Compiler, compiler option, editor
@@ -16,11 +16,7 @@ Prashant Mhatre kicks off with:
 > to the next or specific position, stopping debugger etc.
 
 Let's jump straight into the code first.
-
-[]{#more}
-
-[]{#more-47}
-
+<!--more-->
 Here's the most basic "Hello World" in C#:
 
 ```csharp

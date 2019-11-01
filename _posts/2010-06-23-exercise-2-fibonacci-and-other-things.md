@@ -6,7 +6,7 @@ tags:
 modified_time: '2010-06-23T22:47:11.769+10:00'
 ---
 Prashant's [second
-exercise](http://www.jobsnake.com/seek/articles/index.cgi?openarticle&8533)
+exercise](https://www.articlecity.com/articles/computers_and_internet/article_2686.shtml)
 is:
 
 > Fibonacci series, swapping two variables, finding maximum/minimum
@@ -14,192 +14,102 @@ is:
 
 So in this post we get to play with a bit of recursion, and I've thrown
 in some parametric types for good measure.
-
-[]{#more}
+<!--more-->
 
 The code I came up with for this exercise is as follows:
 
-::: {.csharpcode}
-       1:  using System;
-
-       2:   
-
-       3:  class MainClass
-
-       4:  {
-
-       5:      static ulong Fibonacci1(uint N)
-
-       6:      {
-
-       7:          switch (N)
-
-       8:          {
-
-       9:              case 0:
-
-      10:                  return 0;
-
-      11:              case 1:
-
-      12:                  return 1;
-
-      13:              default:
-
-      14:                  ulong FN = 1, FNMinusTwo, FNMinusOne = 0;
-
-      15:                  while (N > 1)
-
-      16:                  {
-
-      17:                      FNMinusTwo = FNMinusOne;
-
-      18:                      FNMinusOne = FN;
-
-      19:                      FN = FNMinusTwo + FNMinusOne;
-
-      20:                      N--;
-
-      21:                  }
-
-      22:                  return FN;
-
-      23:          }
-
-      24:      }
-
-      25:      
-
-      26:      static ulong Fibonacci2(uint N, ulong NMinusTwo = 0, ulong NMinusOne = 1)
-
-      27:      {
-
-      28:          switch (N)
-
-      29:          {
-
-      30:              case 0:
-
-      31:                  return NMinusTwo;
-
-      32:              case 1:
-
-      33:                  return NMinusOne;
-
-      34:              default:
-
-      35:                  return Fibonacci2(N - 1, NMinusOne, NMinusOne + NMinusTwo);
-
-      36:          }
-
-      37:      }
-
-      38:   
-
-      39:      static void Swap<T>(ref T var1, ref T var2) {
-
-      40:          T tempvar = var1;
-
-      41:          var1 = var2;
-
-      42:          var2 = tempvar;
-
-      43:      }
-
-      44:      
-
-      45:      static int Max(int[] Numbers) {
-
-      46:          int maxint = Numbers[0];
-
-      47:          foreach (int tempint in Numbers) {
-
-      48:              if (tempint > maxint) maxint = tempint;
-
-      49:          }
-
-      50:          return maxint;
-
-      51:      }
-
-      52:   
-
-      53:      static int Min(int[] Numbers)
-
-      54:      {
-
-      55:          int minint = Numbers[0];
-
-      56:          foreach (int tempint in Numbers)
-
-      57:          {
-
-      58:              if (tempint < minint) minint = tempint;
-
-      59:          }
-
-      60:          return minint;
-
-      61:      }
-
-      62:   
-
-      63:      static void Main()
-
-      64:      {
-
-      65:          Console.WriteLine("Fibonacci series");
-
-      66:          for (uint i = 0; i <= 10; i++)
-
-      67:          {
-
-      68:              Console.WriteLine("F(" + i.ToString() + ")\t" + Fibonacci1(i).ToString() + "\t" + Fibonacci2(i).ToString());
-
-      69:          }
-
-      70:   
-
-      71:          Console.WriteLine ("\nSwapping int Variables");
-
-      72:          int A = 5;
-
-      73:          int B = 10;
-
-      74:          Console.WriteLine("Before:\tA=" + A.ToString() + "\tB=" + B.ToString());
-
-      75:          Swap(ref A, ref B);
-
-      76:          Console.WriteLine("Before:\tA=" + A.ToString() + "\tB=" + B.ToString());
-
-      77:          
-
-      78:          Console.WriteLine("\nSwapping char Variables");
-
-      79:          char C = 'C';
-
-      80:          char D = 'D';
-
-      81:          Console.WriteLine("Before:\tC=" + C.ToString() + "\tD=" + D.ToString());
-
-      82:          Swap(ref C, ref D);
-
-      83:          Console.WriteLine("Before:\tC=" + C.ToString() + "\tD=" + D.ToString());
-
-      84:   
-
-      85:          int[] IntArray =  { 15, 4, 76, 53, 25, 63 };
-
-      86:          Console.WriteLine("\nArray = { 15, 4, 76, 53, 25, 63 }");
-
-      87:          Console.WriteLine("Maximum = " + Max(IntArray).ToString());
-
-      88:          Console.WriteLine("Minimum = " + Min(IntArray).ToString());
-
-      89:      }
-
-      90:  }
-:::
+{% highlight csharp linenos %}
+using System;
+
+class MainClass
+{
+    static ulong Fibonacci1(uint N)
+    {
+        switch (N)
+        {
+            case 0:
+                return 0;
+            case 1:
+                return 1;
+            default:
+                ulong FN = 1, FNMinusTwo, FNMinusOne = 0;
+                while (N > 1)
+                {
+                    FNMinusTwo = FNMinusOne;
+                    FNMinusOne = FN;
+                    FN = FNMinusTwo + FNMinusOne;
+                    N--;
+                }
+                return FN;
+        }
+    }
+
+    static ulong Fibonacci2(uint N, ulong NMinusTwo = 0, ulong NMinusOne = 1)
+    {
+        switch (N)
+        {
+            case 0:
+                return NMinusTwo;
+            case 1:
+                return NMinusOne;
+            default:
+                return Fibonacci2(N - 1, NMinusOne, NMinusOne + NMinusTwo);
+        }
+    }
+
+    static void Swap<T>(ref T var1, ref T var2) {
+        T tempvar = var1;
+        var1 = var2;
+        var2 = tempvar;
+    }
+
+    static int Max(int[] Numbers) {
+        int maxint = Numbers[0];
+        foreach (int tempint in Numbers) {
+            if (tempint > maxint) maxint = tempint;
+        }
+        return maxint;
+    }
+
+    static int Min(int[] Numbers)
+    {
+        int minint = Numbers[0];
+        foreach (int tempint in Numbers)
+        {
+            if (tempint < minint) minint = tempint;
+        }
+        return minint;
+    }
+
+    static void Main()
+    {
+        Console.WriteLine("Fibonacci series");
+        for (uint i = 0; i <= 10; i++)
+        {
+            Console.WriteLine("F(" + i.ToString() + ")\t" + Fibonacci1(i).ToString() + "\t" + Fibonacci2(i).ToString());
+        }
+
+        Console.WriteLine ("\nSwapping int Variables");
+        int A = 5;
+        int B = 10;
+        Console.WriteLine("Before:\tA=" + A.ToString() + "\tB=" + B.ToString());
+        Swap(ref A, ref B);
+        Console.WriteLine("Before:\tA=" + A.ToString() + "\tB=" + B.ToString());
+
+        Console.WriteLine("\nSwapping char Variables");
+        char C = 'C';
+        char D = 'D';
+        Console.WriteLine("Before:\tC=" + C.ToString() + "\tD=" + D.ToString());
+        Swap(ref C, ref D);
+        Console.WriteLine("Before:\tC=" + C.ToString() + "\tD=" + D.ToString());
+
+        int[] IntArray =  { 15, 4, 76, 53, 25, 63 };
+        Console.WriteLine("\nArray = { 15, 4, 76, 53, 25, 63 }");
+        Console.WriteLine("Maximum = " + Max(IntArray).ToString());
+        Console.WriteLine("Minimum = " + Min(IntArray).ToString());
+    }
+}
+{% endhighlight %}
 
 For the Fibonacci numbers I decided to write two methods, each of which
 take an integer N, and return the Nth number in the Fibonacci series. 
@@ -242,7 +152,7 @@ method, variables of the parametric type are only be able to be used as
 if they were of type `object`.
 
 The other thing to note in the Swap method is the use of the `ref`
-keyword in declaring the parameters, and passing the variables to them. 
+keyword in declaring the parameters, and passing the variables to them.
 Without the `ref` keyword, variables of value types would be passed in
 as a copy, so that, even though the values of the variable are swapped
 inside the method, the values on the outside would stay the same.  The

@@ -7,8 +7,7 @@ modified_time: '2010-06-18T08:42:29.709+10:00'
 ---
 That's an appropriate title for the first post, on the first blog, of a
 guy who's starting to learn a new programming language.
-
-[]{#more}
+<!--more-->
 
 Hi, I'm Andrew.  Earlier this year I was told that the company I work
 for is closing the site I work at in late 2012.  So I'll be looking for

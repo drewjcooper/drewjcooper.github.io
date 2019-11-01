@@ -12,333 +12,224 @@ this code over six months ago, and I've learned a lot since then.  If I
 was to do it again now I may make different design decisions, but for
 the moment I'll stick with the original code.  Let's see what we can
 learn.
+<!--more-->
 
-[]{#more}
-
-Last post I looked at the `InputLine` class.  A calculator also needs a
-set of operations it can perform.  An operation can be an input
-operation, or can take 0, 1 or 2 operands from the operand stack
-(constant, unary or binary operation) and returns a value to the stack. 
-Each operation is bound to a key on the calculator interface.
+Last post I looked at the `InputLine` class.  A calculator also needs a set of
+operations it can perform.  An operation can be an input operation, or can take
+0, 1 or 2 operands from the operand stack (constant, unary or binary operation)
+and returns a value to the stack. Each operation is bound to a key on the
+calculator interface.
 
 First things first, though.
 
-::: {.csharpcode}
-       1:  using System;
+```csharp
+using System;
+using System.Collections.Generic;
 
-       2:  using System.Collections.Generic;
-
-       3:   
-
-       4:  namespace LearningCSharp
-
-       5:  {
-
-       6:      public partial class RPNCalculatorEngine
-
-       7:      {
-
-       8:          public delegate double BinaryOp(double operand1, double operand2);
-
-       9:          public delegate double UnaryOp(double operand);
-
-      10:   
-:::
+namespace LearningCSharp
+{
+    public partial class RPNCalculatorEngine
+    {
+        public delegate double BinaryOp(double operand1, double operand2);
+        public delegate double UnaryOp(double operand);
+```
 
 I declare a couple of **delegate** types, `BinaryOp` and `UnaryOp`.  A
-**delegate** is similar to a function pointer in C.  It basically gives
-you a way to refer to a method and pass it around to get stuff done.  A
-variable of type `BinaryOp `can refer to a method that takes two
-**double** parameters and return a **double**.  A `UnaryOp `takes one
-**double** parameter and returns a **double**.  We'll see these delegate
-types in use in a minute.
+**delegate** is similar to a function pointer in C.  It basically gives you a
+way to refer to a method and pass it around to get stuff done.  A variable of
+type `BinaryOp `can refer to a method that takes two **double** parameters and
+return a **double**.  A `UnaryOp `takes one **double** parameter and returns a
+**double**.  We'll see these delegate types in use in a minute.
 
-::: {.csharpcode}
-      11:          public class Operation
+```csharp
+        public class Operation
+        {
+            protected readonly string _name;
+            protected readonly string _abbreviation;
+            protected readonly string _keyText;
+            protected readonly char _keyboardShortCut;
+            protected readonly int _operandsRequired;
 
-      12:          {
+            public Operation(string name, string abbr, string keyText, char keyboardShortCut, int operandsRequired = 0)
+            {
+                _name = name;
+                _abbreviation = abbr;
+                _keyText = keyText;
+                _keyboardShortCut = keyboardShortCut;
+                _operandsRequired = operandsRequired;
+            }
 
-      13:              protected readonly string _name;
+            public string Name { get { return _name; } }
+            public string Abbreviation { get { return _abbreviation; } }
+            public string KeyText { get { return _keyText; } }
+            public char ShortCut { get { return _keyboardShortCut; } }
+            public virtual bool HasFunction { get { return false; } }
 
-      14:              protected readonly string _abbreviation;
-
-      15:              protected readonly string _keyText;
-
-      16:              protected readonly char _keyboardShortCut;
-
-      17:              protected readonly int _operandsRequired;
-
-      18:   
-
-      19:              public Operation(string name, string abbr, string keyText, char keyboardShortCut, int operandsRequired = 0)
-
-      20:              {
-
-      21:                  _name = name;
-
-      22:                  _abbreviation = abbr;
-
-      23:                  _keyText = keyText;
-
-      24:                  _keyboardShortCut = keyboardShortCut;
-
-      25:                  _operandsRequired = operandsRequired;
-
-      26:              }
-
-      27:   
-
-      28:              public string Name { get { return _name; } }
-
-      29:              public string Abbreviation { get { return _abbreviation; } }
-
-      30:              public string KeyText { get { return _keyText; } }
-
-      31:              public char ShortCut { get { return _keyboardShortCut; } }
-
-      32:              public virtual bool HasFunction { get { return false; } }
-
-      33:   
-
-      34:              public virtual void Execute(Stack<double> operands) { }
-
-      35:          }
-
-      36:   
-:::
+            public virtual void Execute(Stack<double> operands) { }
+        }
+```
 
 In this design, an **Operation** is something that happens based on user
-interaction with the calculator interface.  Above is the `Operation`
-class, which is the base class for all Operations.  The **class**
-includes read-only **fields** for the name, abbreviation, text to
-display on calculator interface (`_keyText`), keyboard shortcut to bind
-to the operation (`_keyboardShortCut`), and the number of operands
-required, if any, for the operation.
+interaction with the calculator interface.  Above is the `Operation` class,
+which is the base class for all Operations.  The **class** includes read-only
+**fields** for the name, abbreviation, text to display on calculator interface
+(`_keyText`), keyboard shortcut to bind to the operation (`_keyboardShortCut`),
+and the number of operands required, if any, for the operation.
 
-Declaring a **field** as `readonly` means that it can only be set during
-object instantiation, that is, in the constructor.  As there's no way to
-modify the object once it's been created, an `Operation` object is
-immutable.  Declaring the fields as `protected` means that they can only
-be accessed directly by code within this class, or any class derived
-from this class.
+Declaring a **field** as `readonly` means that it can only be set during object
+instantiation, that is, in the constructor.  As there's no way to modify the
+object once it's been created, an `Operation` object is immutable.  Declaring
+the fields as `protected` means that they can only be accessed directly by code
+within this class, or any class derived from this class.
 
-The **class** also defines some public **properties** that give access
-to the values stored in the fields to code outside of the class.  Note
-that `_operandsRequired` doesn't have an associated **property**, so
-it's only available within the class, or those derived from it.  Note
-also the `HasFunction` property, which in this class returns `false`. 
-The purpose of this property is to indicate to client code whether or
-not this **operation** has a function associated with it.  The
-**property** is declared `virtual` so that it can be overridden by
-classes which derive from `Operation`.
+The **class** also defines some public **properties** that give access to the
+values stored in the fields to code outside of the class.  Note that
+`_operandsRequired` doesn't have an associated **property**, so it's only
+available within the class, or those derived from it.  Note also the
+`HasFunction` property, which in this class returns `false`. The purpose of this
+property is to indicate to client code whether or not this **operation** has a
+function associated with it.  The **property** is declared `virtual` so that it
+can be overridden by classes which derive from `Operation`.
 
-Finally, the class has a **virtual method** called `Execute`, which in
-this case does nothing.  In derived classes it will be overridden to
-execute the function associated with the **operation**.
+Finally, the class has a **virtual method** called `Execute`, which in this case
+does nothing.  In derived classes it will be overridden to execute the function
+associated with the **operation**.
 
-::: {.csharpcode}
-      37:          public class BinaryOperation : Operation
+```csharp
+        public class BinaryOperation : Operation
+        {
 
-      38:          {
+            private readonly BinaryOp _function;
 
-      39:   
+            public BinaryOperation(string name, string abbr, string keyText, char keyBoardShortCut, BinaryOp func)
+                : base(name, abbr, keyText, keyBoardShortCut, 2)
+            {
+                _function = func;
+            }
 
-      40:              private readonly BinaryOp _function;
+            public override bool HasFunction { get { return true; } }
 
-      41:   
+            public override void Execute(Stack<double> operands)
+            {
+                if (operands.Count < _operandsRequired)
+                {
+                    throw new ArgumentException(_abbreviation + ": Insufficient operands");
+                }
+                operands.Push(_function(operands.Pop(), operands.Pop()));
+            }
+        }
+```
 
-      42:              public BinaryOperation(string name, string abbr, string keyText, char keyBoardShortCut, BinaryOp func)
+Here's the definition of the `BinaryOperation` class.  Line 37 declares the
+class to be derived from the `Operation` class (`: Operation`), so
+`BinaryOperation` inherits all of `Operation`'s public and protected members
+(fields, properties, methods, etc).
 
-      43:                  : base(name, abbr, keyText, keyBoardShortCut, 2)
-
-      44:              {
-
-      45:                  _function = func;
-
-      46:              }
-
-      47:   
-
-      48:              public override bool HasFunction { get { return true; } }
-
-      49:              
-
-      50:              public override void Execute(Stack<double> operands)
-
-      51:              {
-
-      52:                  if (operands.Count < _operandsRequired)
-
-      53:                  {
-
-      54:                      throw new ArgumentException(_abbreviation + ": Insufficient operands");
-
-      55:                  }
-
-      56:                  operands.Push(_function(operands.Pop(), operands.Pop()));
-
-      57:              }
-
-      58:          }
-
-      59:   
-:::
-
-Here's the definition of the `BinaryOperation` class.  Line 37 declares
-the class to be derived from the `Operation` class (`: Operation`), so
-`BinaryOperation` inherits all of `Operation`'s public and protected
-members (fields, properties, methods, etc).
-
-`BinaryOperation` adds a new field to store a function to be performed
-by the operation.  Note that the type of this member is one of the
-**delegate** types we declared earlier.  So, an object of the
-`BinaryOperation` class will store a reference to a procedure that
-accepts two `double` parameters, and returns a `double` result.
+`BinaryOperation` adds a new field to store a function to be performed by the
+operation.  Note that the type of this member is one of the **delegate** types
+we declared earlier.  So, an object of the `BinaryOperation` class will store a
+reference to a procedure that accepts two `double` parameters, and returns a
+`double` result.
 
 The constructor here takes a form that we haven't seen before.
 
-```csharppublic BinaryOperation(string name, string abbr, string keyText, char keyBoardShortCut, BinaryOp func)
+```csharp
+public BinaryOperation(string name, string abbr, string keyText, char keyBoardShortCut, BinaryOp func)
     : base(name, abbr, keyText, keyBoardShortCut, 2)
 ```
 
-The constructor's signature is similar to that of the `Operation`
-constructor, except that instead of a parameter for the number of
-operands it accepts a delegate for the function to be associated with
-this operation.  The next line defines the **constructor initialiser**. 
-By default, all instance constructors (except for `object`) call the
-parameterless constructor of the base class (`base()`) before executing
-the body of the constructor.  This allows the base class to handle the
-construction of its bit so the derived class doesn't have to worry about
-it.  In this case we change the default behaviour by specifying the
-**constructor initialiser** explicitly.  This basically passes most of
-the parameters through to the `Operation` constructor, including the
-specification of the number of operands needed for this operation.  The
-body of the constructor then initialises the only thing specific to this
-class, the `_function` field.
+The constructor's signature is similar to that of the `Operation` constructor,
+except that instead of a parameter for the number of operands it accepts a
+delegate for the function to be associated with this operation.  The next line
+defines the **constructor initialiser**. By default, all instance constructors
+(except for `object`) call the parameterless constructor of the base class
+(`base()`) before executing the body of the constructor.  This allows the base
+class to handle the construction of its bit so the derived class doesn't have to
+worry about it.  In this case we change the default behaviour by specifying the
+**constructor initialiser** explicitly.  This basically passes most of the
+parameters through to the `Operation` constructor, including the specification
+of the number of operands needed for this operation.  The body of the
+constructor then initialises the only thing specific to this class, the
+`_function` field.
 
 In order for the calculator to be able to make use of this function the
-`BinaryOperator` class overrides the `Execute` method from `Operation`. 
-The calculator engine passes the operand stack to the Execute method. 
-The method checks that there are sufficient operands on the stack, and
-throws an exception if not.  The exception includes an error message
-that can be used by the calculator engine.
+`BinaryOperator` class overrides the `Execute` method from `Operation`. The
+calculator engine passes the operand stack to the Execute method. The method
+checks that there are sufficient operands on the stack, and throws an exception
+if not.  The exception includes an error message that can be used by the
+calculator engine.
 
-If there are enough operands on the stack, `Execute` pop's the top two
-operands, calls the function stored in the operation, and then pushes
-the result onto the stack.  Pretty simple.
+If there are enough operands on the stack, `Execute` pops the top two operands,
+calls the function stored in the operation, and then pushes the result onto the
+stack.  Pretty simple.
 
-::: {.csharpcode}
-      60:          public class UnaryOperation : Operation
+```csharp
+        public class UnaryOperation : Operation
+        {
+            private readonly UnaryOp _function;
 
-      61:          {
+            public UnaryOperation(string name, string abbr, string keyText, char keyBoardShortCut, UnaryOp func)
+                : base(name, abbr, keyText, keyBoardShortCut, 1)
+            {
+                _function = func;
+            }
 
-      62:   
+            public override bool HasFunction { get { return true; } }
 
-      63:              private readonly UnaryOp _function;
+            public override void Execute(Stack<double> operands)
+            {
+                if (operands.Count < _operandsRequired)
+                {
+                    throw new ArgumentException(_abbreviation + ": Insufficient operands");
+                }
+                operands.Push(_function(operands.Pop()));
+            }
+        }
+```
 
-      64:   
+The `UnaryOperation` class looks very similar to `BinaryOperation`.  The basic
+differences are the delegate type passed to the constructor, the number of
+required operands passed to the base constructor, and operation of the `Execute`
+method.  In this class `Execute` pops a single operand off the stack and returns
+the result of the function to the stack.
 
-      65:              public UnaryOperation(string name, string abbr, string keyText, char keyBoardShortCut, UnaryOp func)
+```csharp
+        public class ConstantOperation : Operation
+        {
 
-      66:                  : base(name, abbr, keyText, keyBoardShortCut, 1)
+            private readonly double _value;
 
-      67:              {
+            public ConstantOperation(string name, string abbr, string keyText, char keyBoardShortCut, double value)
+                : base(name, abbr, keyText, keyBoardShortCut, 0)
+            {
+                _value = value;
+            }
 
-      68:                  _function = func;
+            public override bool HasFunction { get { return true; } }
 
-      69:              }
+            public override void Execute(Stack<double> operands)
+            {
+                operands.Push(_value);
+            }
+        }
+    }
+}
+```
 
-      70:   
+The `ConstantOperation` class is similar to the two above except that instead of
+a function delegate, it stores a constant value. The `Execute` method just
+pushes that value onto the operand stack.
 
-      71:              public override bool HasFunction { get { return true; } }
+So there we are, we've looked at the implementation of the Operations and the
+InputLine for the calculator.  Next time we'll look at the rest of the
+calculator engine and see how all this ties together.
 
-      72:   
-
-      73:              public override void Execute(Stack<double> operands)
-
-      74:              {
-
-      75:                  if (operands.Count < _operandsRequired)
-
-      76:                  {
-
-      77:                      throw new ArgumentException(_abbreviation + ": Insufficient operands");
-
-      78:                  }
-
-      79:                  operands.Push(_function(operands.Pop()));
-
-      80:              }
-
-      81:          }
-
-      82:   
-:::
-
-The `UnaryOperation` class loos very similar to `BinaryOperation`.  The
-basic differences are the delegate type passed to the constructor, the
-number of required operands passed to the base constructor, and
-operation of the `Execute` method.  In this class `Execute` pops a
-single operand off the stack and returns the result of the function to
-the stack.
-
-::: {.csharpcode}
-      83:          public class ConstantOperation : Operation
-
-      84:          {
-
-      85:   
-
-      86:              private readonly double _value;
-
-      87:   
-
-      88:              public ConstantOperation(string name, string abbr, string keyText, char keyBoardShortCut, double value)
-
-      89:                  : base(name, abbr, keyText, keyBoardShortCut, 0)
-
-      90:              {
-
-      91:                  _value = value;
-
-      92:              }
-
-      93:   
-
-      94:              public override bool HasFunction { get { return true; } }
-
-      95:   
-
-      96:              public override void Execute(Stack<double> operands)
-
-      97:              {
-
-      98:                  operands.Push(_value);
-
-      99:              }
-
-     100:          }
-
-     101:      }
-
-     102:  }
-:::
-
-The `ConstantOperation` class is similar to the two above except that
-instead of a function delegate, it stores a constant value.  The
-`Execute` method just pushes that value onto the operand stack.
-
-So there we are, we've looked at the implementation of the Operations
-and the InputLine for the calculator.  Next time we'll look at the rest
-of the calculator engine and see how all this ties together.
-
-Before I go, though, a couple of notes on the way this design would
-change if I were doing it today.  Since I designed these classes I've
-been learning a lot about the .Net framework.  In the `System` namespace
-are a bunch of classes which use generics to define easy to use
-delegates.  Instead of declaring the `BinaryOp` and `UnaryOp` delegates
-we can use `Func<double, double, double>` and `Func<double, double>`. 
-And for consistency we could use `Func<double>` instead of the value
-parameter for the `ConstantOperation` class. 
+Before I go, though, a couple of notes on the way this design would change if I
+were doing it today. Since I designed these classes I've been learning a lot
+about the .Net framework.  In the `System` namespace are a bunch of classes
+which use generics to define easy to use delegates.  Instead of declaring the
+`BinaryOp` and `UnaryOp` delegates we can use `Func<double, double, double>` and
+`Func<double, double>`. And for consistency we could use `Func<double>` instead
+of the value parameter for the `ConstantOperation` class.
 
 See you next time.
