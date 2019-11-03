@@ -9,6 +9,7 @@ The last error I've seen in using `System.Random` is to use a single instance of
 the class in an application that calls `.Next` in multiple threads.
 {{numbers[instance-singleton] | capitalize}} {{of-submissions}} had this
 problem, and, to be fair, so did I in my original response to our coding test.
+<!--more-->
 
 [Microsoft's documentation][docs] says the following about using `System.Random`
 across multiple threads:

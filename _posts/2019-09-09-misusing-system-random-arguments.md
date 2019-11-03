@@ -7,8 +7,10 @@ category: Coding
 
 The most basic error in using `System.Random` is to get the parameters for the
 `Next` method wrong. Part of our coding tests involves generating a random key
-value from `key0` to `key9`. {{numbers[arguments-bad] | capitalize}}
-{{of-submissions}} reviewed used the following incorrect method call to get
+value from `key0` to `key9`.
+<!--more-->
+
+{{numbers[arguments-bad] | capitalize}} {{of-submissions}} reviewed used the following incorrect method call to get
 that random digit:
 
 ```csharp
