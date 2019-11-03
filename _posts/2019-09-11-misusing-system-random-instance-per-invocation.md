@@ -25,7 +25,7 @@ generated from a kind of algorithmic state machine. The constructor does a bunch
 of work to set up the state machine, and then each call to `Next()` gets a value
 and increments the state of the machine.  
 
-## Unnecessary Expense
+###Unnecessary Expense
 
 So we have two basic problems. One is that constructing a new instance of
 `System.Random` is relatively expensive. The following code is a basic benchmark
@@ -63,7 +63,7 @@ expensive to create a new instance of `System.Random` for each call to `Next()`,
 than to use a single instance for all calls. And that's not even considering the
 GC pressure caused by all those extra objects.
 
-## Pseudo-Non-Random Numbers
+###Pseudo-Non-Random Numbers
 
 But that's not the only problem. Creating a new instance of `System.Random`
 creates a new state machine for generating pseudo-random numbers. Initialising a
@@ -75,7 +75,7 @@ should be clear that, if you're requesting multiple random numbers in a short
 period of time, say rolling 5 dice for a game of Yahtzee, then there's a good
 change that you'll end up with a run of the same number.
 
-## Conclusion
+###Conclusion
 
 So, don't create an instance of `System.Random` for each call to `Next()`.
 Create a single instance once, then use it to generate all the random numbers
