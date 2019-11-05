@@ -23,6 +23,8 @@ url: https://drewjcooper.github.io # the base hostname & protocol for your site,
 twitter_username: drewjcooper
 github_username:  drewjcooper
 
+repository: drewjcooper/drewjcooper.github.io
+
 # Build settings
 markdown: kramdown
 remote_theme: "drewjcooper/minimal-mistakes@blog"
