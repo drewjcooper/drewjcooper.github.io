@@ -9,6 +9,7 @@ modified_time: '2018-08-24T21:08:35.695+10:00'
 In the [last post]({% post_url 2018-06-22-fun-with-deconstructors %}), I looked
 at Deconstructors in C# 7.0. I thought I'd create a library with a few extension
 methods to add Deconstructor support for Arrays and KeyValuePairs.
+<!--more-->
 
 I started with adding extension methods for arrays. I developed the methods
 test-first and everything went pretty much as I expected it to. I ended up with
