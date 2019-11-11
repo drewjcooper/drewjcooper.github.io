@@ -12,6 +12,7 @@ introduced as part of the new [`ValueTuple` support in C#
 7.0](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-7#tuples).
 The code we'll look at this time will probably be slightly more useful for
 real-world production code.
+<!--more-->
 
 ### The basics
 
