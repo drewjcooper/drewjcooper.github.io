@@ -1,8 +1,6 @@
 ---
 title: Exercise 6 (part 2) – When is a class not a class?
-date: '2010-09-15T22:09:00.001+10:00'
 tags: 
-modified_time: '2010-09-15T22:09:43.487+10:00'
 ---
 It's been a while, but I've finally found some time to post again.  In my [last
 post]({% post_url 2010-08-01-exercise-6-part-1-multi-file-dll %})

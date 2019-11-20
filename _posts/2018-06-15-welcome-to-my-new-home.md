@@ -1,10 +1,8 @@
 ---
 title: Welcome to my new home
-date: '2018-06-15T21:30:00.001+10:00'
 author: "-"
 tags: 
 - Blogging
-modified_time: '2018-06-15T21:30:24.338+10:00'
 ---
 My first foray into blogging was 8 years ago, in 2010, when I was [learning C#
 and .Net]({% post_url 2010-06-07-hello-world %}) for the first time.  At the

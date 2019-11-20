@@ -1,11 +1,9 @@
 ---
 title: Exercise 3 - Collections and Sorting
-date: '2010-07-02T04:41:00.001+10:00'
 tags:
 - C# Specifics
 - C# Exercise
 - ".NET Specifics"
-modified_time: '2010-07-02T04:58:25.866+10:00'
 ---
 The third exercise in [15 Exercises for Learning a new Programming
 Language](https://www.articlecity.com/articles/computers_and_internet/article_2686.shtml)

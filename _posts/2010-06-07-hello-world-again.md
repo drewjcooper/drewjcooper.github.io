@@ -1,9 +1,8 @@
 ---
 title: Hello, World! – again
-date: '2010-06-07T22:56:00.001+10:00'
 tags:
 - C# Exercise
-modified_time: '2010-06-19T11:15:54.268+10:00'
+last_modified_at: '2010-06-19T11:15:54.268+10:00'
 ---
 In [15 Exercises for Learning a new Programming
 Language](https://www.articlecity.com/articles/computers_and_internet/article_2686.shtml),

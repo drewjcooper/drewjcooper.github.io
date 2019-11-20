@@ -1,11 +1,9 @@
 ---
 title: Exercise 6 (part 4) – The Calculator Engine and Anonymous Methods
-date: '2011-04-13T02:01:00.001+10:00'
 tags:
 - C# Specifics
 - C# Exercise
 - .NET Specifics
-modified_time: '2011-04-13T02:01:28.397+10:00'
 ---
 In this post I'll complete the RPN Calculator engine we've been looking
 at.  This will complete the DLL I've been working on, and next time I'll

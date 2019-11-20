@@ -1,11 +1,10 @@
 ---
 title: Exercise 6 (part 3) – Delegates and Class Inheritance
-date: '2011-04-10T21:28:00.001+10:00'
 tags:
 - C# Specifics
 - C# Exercise
 - ".NET Specifics"
-modified_time: '2011-04-11T11:28:06.748+10:00'
+last_modified_at: '2011-04-11T11:28:06.748+10:00'
 ---
 So, back to my RPN calculator implementation.  Bear in mind that I wrote
 this code over six months ago, and I've learned a lot since then.  If I

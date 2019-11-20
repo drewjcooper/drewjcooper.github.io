@@ -1,9 +1,8 @@
 ---
 title: The code so far…
-date: '2011-05-16T22:24:00.001+10:00'
 tags:
 - Blog Info
-modified_time: '2019-11-01'
+last_modified_at: '2019-11-01'
 ---
 For anybody who's actually been reading and is interested I've uploaded
 a ZIP file containing the Visual Studio project with all the code from

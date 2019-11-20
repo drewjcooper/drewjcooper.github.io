@@ -1,9 +1,8 @@
 ---
 title: Where to begin?
-date: '2010-06-07T21:57:00.001+10:00'
 tags:
 - Learning Process
-modified_time: '2010-06-18T08:41:17.375+10:00'
+last_modified_at: '2010-06-18T08:41:17.375+10:00'
 ---
 So the first thing to do when learning a new language is obviously to find some
 reference materials. In this post I'll look at C# references.  I'll leave .NET

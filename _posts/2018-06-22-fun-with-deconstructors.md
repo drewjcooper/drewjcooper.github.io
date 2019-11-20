@@ -1,10 +1,9 @@
 ---
 title: Fun with Deconstructors
-date: '2018-06-22T14:17:00.000+10:00'
 tags:
 - Deconstructors
 - C#
-modified_time: '2018-08-24T21:11:59.081+10:00'
+last_modified_at: '2018-08-24T21:11:59.081+10:00'
 ---
 In my [last post]({% post_url 2018-06-16-fun-with-initialisers %}) I had some
 fun with C# initialisers. This time we'll look at Deconstructors that were

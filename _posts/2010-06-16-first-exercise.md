@@ -1,9 +1,8 @@
 ---
 title: The First Exercise
-date: '2010-06-16T19:21:00.001+10:00'
 tags:
 - C# Exercise
-modified_time: '2011-09-27T12:30:01.493+10:00'
+last_modified_at: '2011-09-27T12:30:01.493+10:00'
 ---
 The first item in Prashant's list of [15 Exercises for Learning a new
 Programming

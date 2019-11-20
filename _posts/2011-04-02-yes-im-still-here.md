@@ -1,9 +1,7 @@
 ---
 title: Yes, I’m still here….
-date: '2011-04-02T13:45:00.001+11:00'
 tags:
 - Blog Info
-modified_time: '2011-04-02T13:46:43.090+11:00'
 ---
 So, you may have noticed that it's been about 6 months since my last
 post.  I've been a little busy.  I've also been learning heaps.

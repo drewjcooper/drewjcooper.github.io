@@ -1,9 +1,7 @@
 ---
 title: Exercise 2 – Fibonacci, and other things
-date: '2010-06-23T22:22:00.001+10:00'
 tags:
 - C# Exercise
-modified_time: '2010-06-23T22:47:11.769+10:00'
 ---
 Prashant's [second
 exercise](https://www.articlecity.com/articles/computers_and_internet/article_2686.shtml)
