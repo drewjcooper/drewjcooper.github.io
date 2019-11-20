@@ -1,0 +1,14 @@
+{% capture last_modified_at %}
+  {{ page.last_modified_at }},{{ site.data[series_slug].last_modified_at }}
+{% endcapture %}
+{% assign last_modified_at = last_modified_at | strip | split: "," | sort | last %}
+<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Published:
+<time datetime="{{ page.date | date_to_xmlschema }}">
+  {{ page.date | date: "%B %d, %Y" }}
+</time>
+{% if last_modified_at %}
+  | Updated:
+  <time datetime="{{ last_modified_at | date_to_xmlschema }}">
+    {{ last_modified_at | date: "%B %d, %Y" }}
+  </time>
+{% endif %}

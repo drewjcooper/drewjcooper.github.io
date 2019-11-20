@@ -2,6 +2,7 @@
 title: Misusing System.Random
 series: Misusing System.Random
 category: Coding
+last_modified_at: '2019-11-13'
 ---
 {% include misusing-system-random-stats.md %}
 

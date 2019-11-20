@@ -16,14 +16,10 @@
 {%- assign seed-good               = stats.seed.good              | size -%}
 {%- assign seed-incorrect = seed-constant | plus: seed-poor | plus: seed-timing -%}
 {%- assign divisor = stats.submissions | times: 1.0 -%}
-{%- assign instance-per-invocation-pc = instance-per-invocation |
-    divided_by: divisor | times: 100 | round -%}
-{%- assign instance-singleton-pc = instance-singleton |
-    divided_by: divisor | times: 100 | round -%}
-{%- assign arguments-bad-pc = arguments-bad |
-    divided_by: divisor | times: 100 | round -%}
-{%- assign seed-incorrect-pc = seed-incorrect |
-    divided_by: divisor | times: 100 | round -%}
+{%- assign instance-per-invocation-pc = instance-per-invocation | divided_by: divisor | times: 100 | round -%}
+{%- assign instance-singleton-pc = instance-singleton | divided_by: divisor | times: 100 | round -%}
+{%- assign arguments-bad-pc = arguments-bad | divided_by: divisor | times: 100 | round -%}
+{%- assign seed-incorrect-pc = seed-incorrect | divided_by: divisor | times: 100 | round -%}
 
 {%- capture of-submissions -%}
 of the {{numbers[stats.submissions]}} submissions
