@@ -114,7 +114,7 @@ Conventions](https://msdn.microsoft.com/en-us/library/ms229043.aspx) for
 use in developing class libraries.  I've renamed some of the variables
 and parameters in this solution to adhere to these conventions.
 
-###More on Extension Methods
+### More on Extension Methods
 
 To quote the [C# Programming
 Guide](https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx) in MSDN:
