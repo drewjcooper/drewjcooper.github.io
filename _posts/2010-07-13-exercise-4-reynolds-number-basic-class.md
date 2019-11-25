@@ -1,11 +1,9 @@
 ---
 title: 'Exercise 4 – Reynold’s Number: a basic class'
-date: '2010-07-13T20:19:00.001+10:00'
 tags:
 - C# Specifics
 - C# Exercise
 - ".NET Specifics"
-modified_time: '2010-07-13T22:54:16.321+10:00'
 ---
 The fourth of [Prashant's
 exercises](https://www.articlecity.com/articles/computers_and_internet/article_2686.shtml)

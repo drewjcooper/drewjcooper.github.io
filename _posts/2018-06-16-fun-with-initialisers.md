@@ -1,9 +1,7 @@
 ---
 title: Fun with initialisers
-date: '2018-06-16T22:38:00.000+10:00'
 tags:
 - C#
-modified_time: '2018-06-16T22:38:44.833+10:00'
 ---
 C# has had object and collection initialisers since C# 3.0, but all the docs and
 blogs I've ever seen only cover the basics. We've all seen examples like these:

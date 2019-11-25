@@ -1,11 +1,9 @@
 ---
 title: Max/Min revisited
-date: '2010-06-30T22:50:00.001+10:00'
 tags:
 - C# Specifics
 - C# Exercise
 - ".NET Specifics"
-modified_time: '2010-06-30T22:50:14.399+10:00'
 ---
 A kind commenter on [my last
 post]({% post_url 2010-06-23-exercise-2-fibonacci-and-other-things %})

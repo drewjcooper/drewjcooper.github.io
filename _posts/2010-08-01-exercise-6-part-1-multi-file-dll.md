@@ -1,11 +1,8 @@
 ---
 title: Exercise 6 (part 1) – Multi-file DLL project
-date: '2010-08-01T21:36:00.001+10:00'
 tags:
 - C# Specifics
 - C# Exercise
-modified_time: '2010-08-01T21:46:36.891+10:00'
-thumbnail: http://lh3.ggpht.com/_8osJtRBSdMg/TFVcQzPCqTI/AAAAAAAAARE/SYPnqzpZcRI/s72-c/image_thumb17.png?imgmax=800
 ---
 For his 6th exercise, [Prashant
 suggests](https://www.articlecity.com/articles/computers_and_internet/article_2686.shtml)

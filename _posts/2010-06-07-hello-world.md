@@ -1,9 +1,8 @@
 ---
 title: Hello, World!
-date: '2010-06-07T21:52:00.001+10:00'
 tags:
 - Blog Info
-modified_time: '2010-06-18T08:42:29.709+10:00'
+last_modified_at: '2010-06-18T08:42:29.709+10:00'
 ---
 That's an appropriate title for the first post, on the first blog, of a
 guy who's starting to learn a new programming language.

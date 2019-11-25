@@ -1,11 +1,10 @@
 ---
 title: A cheat sheet for … jQuery ?
-date: '2011-05-17T04:38:00.001+10:00'
 tags:
 - Reference
 - Cheat Sheet
 - jQuery
-modified_time: '2014-03-04T04:21:23.198+11:00'
+last_modified_at: '2014-03-04T04:21:23.198+11:00'
 ---
 And now for something completely different ... a man with three buttocks!
 

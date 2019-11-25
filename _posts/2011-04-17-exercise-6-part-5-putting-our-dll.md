@@ -1,11 +1,9 @@
 ---
 title: Exercise 6 (part 5) – Putting our DLL through it’s paces
-date: '2011-04-17T23:09:00.001+10:00'
 tags:
 - C# Specifics
 - C# Exercise
 - ".NET Specifics"
-modified_time: '2011-04-17T23:09:31.863+10:00'
 ---
 Over the last four posts I've built up the engine of an RPN calculator in the
 form of a DLL.  Now it's finally time to put it use.  In this post I'll present

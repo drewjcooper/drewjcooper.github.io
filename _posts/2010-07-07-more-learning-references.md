@@ -1,9 +1,8 @@
 ---
 title: More learning references
-date: '2010-07-07T05:59:00.001+10:00'
 tags:
 - Learning Process
-modified_time: '2010-07-08T11:21:08.454+10:00'
+last_modified_at: '2010-07-08T11:21:08.454+10:00'
 ---
 As I've been working on learning C# and .NET in the last couple of
 weeks, I've come across a number of useful references beyond the

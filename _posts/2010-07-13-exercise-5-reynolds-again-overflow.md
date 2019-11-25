@@ -1,11 +1,9 @@
 ---
 title: 'Exercise 5 – Reynolds again: overflow without exception'
-date: '2010-07-13T22:53:00.001+10:00'
 tags:
 - C# Specifics
 - C# Exercise
 - ".NET Specifics"
-modified_time: '2010-07-13T22:53:46.940+10:00'
 ---
 The 5th of Prashant's [15 Exercises for Learning a new Programming
 Language](https://www.articlecity.com/articles/computers_and_internet/article_2686.shtml)

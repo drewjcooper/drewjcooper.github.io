@@ -1,11 +1,8 @@
 ---
 title: C#’s type system
-date: '2010-06-19T06:56:00.001+10:00'
 tags:
 - C# Specifics
 - ".NET Specifics"
-modified_time: '2010-06-19T06:58:02.584+10:00'
-thumbnail: http://lh3.ggpht.com/_8osJtRBSdMg/TBvdfDUvKvI/AAAAAAAAAQ8/GihvbfBs6_8/s72-c/image%5B10%5D.png?imgmax=800
 ---
 C# is a strongly-typed object-oriented language.  Many of the types will appear
 familiar, at first glance, to those who know C or C++, and most C expressions
