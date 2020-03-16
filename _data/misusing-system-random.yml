@@ -1,21 +1,21 @@
 header: "This is a series on common ways that `System.Random` is misused, 
   based on my experience reviewing code test submissions from job candidates."
 
-last_modified_at: "2019-11-15"
+last_modified_at: "2020-03-17"
 
-submissions: 33
+submissions: 35
 
 instance:
-  perInvocation: ++++++
+  perInvocation: +++++++
   perThread: ++++++
-  singleton: ++++++++++++++++++++
+  singleton: +++++++++++++++++++++
 
 arguments:
   good: ++++++++++++
-  bad: ++++++++++++++++++++
+  bad: ++++++++++++++++++++++
 
 seed:
   constant: ++
   poor: ++
-  timing: +++++++
-  good: +++++++++++++++++++++
+  timing: ++++++++
+  good: ++++++++++++++++++++++
